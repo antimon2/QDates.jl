@@ -1,5 +1,8 @@
 using QDates
 using Base.Test
 
-# write your own tests here
-@test 1 == 2
+tests = ["qdates"]
+
+for test in tests
+    include("$(test).jl")
+end
