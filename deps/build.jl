@@ -16,5 +16,5 @@ else
 end
 
 open(joinpath(depsdir, "deps.jl"), "w") do f
-    print(f, "const libqref = \"$(joinpath((depsdir), libfilename))\"")
+    print(f, "const libqref = \"$(escape_string(joinpath((depsdir), libfilename)))\"")
 end
