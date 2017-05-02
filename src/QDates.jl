@@ -49,8 +49,7 @@ const LAST_YEAR = 2100
 const DAYS_OFFSET = 1721425
 
 include("types.jl")
-# include("periods.jl")
-# include("accessors.jl")
+include("accessors.jl")
 # include("query.jl")
 # include("arithmetic.jl")
 # include("conversions.jl")
@@ -89,53 +88,6 @@ function _chk_error(qarr0::Array{Cint,1}, qarr1::Array{Cint,1})
 end
 
 @inline date2jdn(dt::Union{Date,QDate}) = value(dt) + DAYS_OFFSET
-
-function year(qdt::QDate)
-    cqdate = _qref(qdt)
-    Int(cqdate[2])
-end
-
-function month(qdt::QDate)
-    cqdate = _qref(qdt)
-    Int(cqdate[4])
-end
-
-function day(qdt::QDate)
-    cqdate = _qref(qdt)
-    Int(cqdate[5])
-end
-
-function week(qdt::QDate)
-    cqdate = _qref(qdt)
-    Int(cqdate[6]) + 1
-end
-
-function yearmonth(qdt::QDate)
-    cqdate = _qref(qdt)
-    (Int(cqdate[2]), Int(cqdate[4]))
-end
-
-function monthday(qdt::QDate)
-    cqdate = _qref(qdt)
-    (Int(cqdate[4]), Int(cqdate[5]))
-end
-
-function yearmonthday(qdt::QDate)
-    cqdate = _qref(qdt)
-    (Int(cqdate[2]), Int(cqdate[4]), Int(cqdate[5]))
-end
-
-function isleapmonth(qdt::QDate)
-    cqdate = _qref(qdt)
-    cqdate[7] != 0
-end
-
-function yearmonthleapday(qdt::QDate)
-    cqdate = _qref(qdt)
-    (Int(cqdate[2]), Int(cqdate[4]), cqdate[7] != 0, Int(cqdate[5]))
-end
-
-@inline days(qdt::QDate) = value(qdt)
 
 Base.convert(::Type{Date}, qdt::QDate) = Date(qdt.instant)
 Base.convert(::Type{QDate}, dt::Date) = QDate(dt.instant)
