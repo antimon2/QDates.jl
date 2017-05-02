@@ -33,7 +33,7 @@ dt = convert(Date, qdt)
 @test Dates.yearmonthday(dt) == (2017, 6, 24)
 
 qdt1 = QDate(qdt)
-@test is(qdt1, qdt)
+@test qdt1 === qdt
 
 qdt0 = QDate(Date(2017, 5))
 qdt1 = QDate(Date(2017, 5, 1))

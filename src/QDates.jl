@@ -29,6 +29,8 @@ import Base.Dates:
     TimeType,
     UTD,
     UTInstant,
+    Year,
+    Month,
     Day,
     year,
     month,
@@ -46,34 +48,16 @@ const FIRST_YEAR = 445
 const LAST_YEAR = 2100
 const DAYS_OFFSET = 1721425
 
-immutable QDate <: TimeType
-    instant::UTInstant{Day}
-    QDate(instant::UTInstant{Day}) = new(instant)
-end
-@inline QDate(year::Integer, month::Integer=1, day::Integer=1) = QDate(year, month, false, day)
-function QDate(year::Integer, month::Integer, leap::Bool, day::Integer)
-    # jdn = _rqref(year, month, leap, day)
-    jdn = _rqref_strict(year, month, leap, day)
-    QDate(UTD(jdn - DAYS_OFFSET))
-end
-@inline _ci(x) = convert(Cint, x)
-@inline QDate(y,m=1,d=1) = QDate(_ci(y), _ci(m), _ci(d))
-@inline QDate(y,m,l::Bool,d) = QDate(_ci(y), _ci(m), l, _ci(d))
-@inline QDate(qdt::QDate) = qdt
-
-@inline function _qref(qdt::Union{Date,QDate})
-    _qref(date2jdn(qdt))
-end
-@inline function _rqref(year::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
-    _rqref(Cint[FIRST_VALUE+DAYS_OFFSET,year,0,month,day,0,leap])
-end
-
-function _check_value(value::Int)
-    if !(FIRST_VALUE <= value <= LAST_VALUE)
-        throw(DomainError())
-    end
-end
-@inline _check_value(instant::UTInstant{Day}) = _check_value(instant.periods.value)
+include("types.jl")
+# include("periods.jl")
+# include("accessors.jl")
+# include("query.jl")
+# include("arithmetic.jl")
+# include("conversions.jl")
+# include("ranges.jl")
+# include("adjusters.jl")
+# include("rounding.jl")
+include("io.jl")
 
 function _rqref_strict(year::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
     qarr0 = Cint[FIRST_VALUE+DAYS_OFFSET,year,0,month,day,0,leap]
@@ -94,6 +78,9 @@ function _chk_error(qarr0::Array{Cint,1}, qarr1::Array{Cint,1})
         "Month: $(qarr0[2])/$(qarr0[4]) not a leap month"
     elseif qarr0[5] < 1
         "Day: $(qarr0[5]) out of range (1:$(daysinmonth(qarr0[2],qarr0[4],(qarr0[7]!=0))))"
+    elseif qarr0[2] == LAST_YEAR && qarr0[4] == 12 && qarr0[5] > 1
+        # 2100/12 is privilleged
+        "Day: $(qarr0[5]) out of range (1:1)"
     elseif qarr0[5] > qarr1[5]
         "Day: $(qarr0[5]) out of range (1:$(qarr0[5]-qarr1[5]))"
     else
@@ -149,24 +136,6 @@ function yearmonthleapday(qdt::QDate)
 end
 
 @inline days(qdt::QDate) = value(qdt)
-
-function daysinmonth(y::Integer, m::Integer, leap::Bool=false)
-    y1 = y
-    m1 = m + 1
-    if m1 > 12
-        y1 += 1
-        m1 = 1
-    end
-    jdn0 = _rqref(y, m, leap)
-    if jdn0 == 0
-        0
-    elseif leap
-        _rqref(y1, m1, false) - jdn0
-    else
-        jdn1 = _rqref(y, m, true)
-        (jdn1 > 0 ? jdn1 : _rqref(y1, m1, false)) - jdn0
-    end
-end
 
 Base.convert(::Type{Date}, qdt::QDate) = Date(qdt.instant)
 Base.convert(::Type{QDate}, dt::Date) = QDate(dt.instant)
