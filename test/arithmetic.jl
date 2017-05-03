@@ -100,14 +100,10 @@ t2 = [QDates.QDate(2009,1,2) QDates.QDate(2009,2,2) QDates.QDate(2010,1,3); QDat
 # @test (Dates.Month(1) + Dates.Day(1)) + t1 == [QDates.QDate(2009,2,2) QDates.QDate(2009,2,3) QDates.QDate(2009,2,4); QDates.QDate(2009,3,2) QDates.QDate(2009,3,3) QDates.QDate(2009,3,4)]
 # @test t1 + (Dates.Month(1) + Dates.Day(1)) == [QDates.QDate(2009,2,2) QDates.QDate(2009,2,3) QDates.QDate(2009,2,4); QDates.QDate(2009,3,2) QDates.QDate(2009,3,3) QDates.QDate(2009,3,4)]
 
-@test Dates.Day(1) .- t1 == [QDates.QDate(2008,12,30) QDates.QDate(2009,1,1) QDates.QDate(2009,1,2); QDates.QDate(2009,1,30) QDates.QDate(2009,2,1) QDates.QDate(2009,2,2)]
 @test t1 .- Dates.Day(1) == [QDates.QDate(2008,12,30) QDates.QDate(2009,1,1) QDates.QDate(2009,1,2); QDates.QDate(2009,1,30) QDates.QDate(2009,2,1) QDates.QDate(2009,2,2)]
-# @test Dates.Day(1) - t1 == [QDates.QDate(2008,12,30) QDates.QDate(2009,1,1) QDates.QDate(2009,1,2); QDates.QDate(2009,1,30) QDates.QDate(2009,2,1) QDates.QDate(2009,2,2)]
 # @test t1 - Dates.Day(1) == [QDates.QDate(2008,12,30) QDates.QDate(2009,1,1) QDates.QDate(2009,1,2); QDates.QDate(2009,1,30) QDates.QDate(2009,2,1) QDates.QDate(2009,2,2)]
 
-@test (Dates.Month(1) + Dates.Day(1)) .- t1 == [QDates.QDate(2008,11,29) QDates.QDate(2008,12,1) QDates.QDate(2008,12,2); QDates.QDate(2008,12,30) QDates.QDate(2009,1,1) QDates.QDate(2009,1,2)]
 @test t1 .- (Dates.Month(1) + Dates.Day(1)) == [QDates.QDate(2008,11,29) QDates.QDate(2008,12,1) QDates.QDate(2008,12,2); QDates.QDate(2008,12,30) QDates.QDate(2009,1,1) QDates.QDate(2009,1,2)]
-# @test (Dates.Month(1) + Dates.Day(1)) - t1 == [QDates.QDate(2008,11,29) QDates.QDate(2008,12,1) QDates.QDate(2008,12,2); QDates.QDate(2008,12,30) QDates.QDate(2009,1,1) QDates.QDate(2009,1,2)]
 # @test t1 - (Dates.Month(1) + Dates.Day(1)) == [QDates.QDate(2008,11,29) QDates.QDate(2008,12,1) QDates.QDate(2008,12,2); QDates.QDate(2008,12,30) QDates.QDate(2009,1,1) QDates.QDate(2009,1,2)]
 
 # Array{TimeType}, Array{TimeType}
