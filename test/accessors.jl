@@ -1,12 +1,14 @@
 # accessors.jl
 
 function test_qdates(from,to)
+    ds = QDates.days(QDates.QDate(from,1,1))
     y = m = d = 0; l = false
     for y in from:to
         for m = 1:12
             for l = false:true
                 for d = 1:QDates.daysinmonth(y,m,l)
                     qdt = QDates.QDate(y,m,l,d)
+                    @test ds == Dates.days(qdt) == QDates.days(qdt)
                     @test y == Dates.year(qdt)== QDates.year(qdt)
                     @test m == Dates.month(qdt)== QDates.month(qdt)
                     @test l == QDates.isleapmonth(qdt)
@@ -17,6 +19,7 @@ function test_qdates(from,to)
                     @test (y, m, l) == QDates.yearmonthleap(qdt)
                     @test (m, l, d) == QDates.monthleapday(qdt)
                     @test (y, m, l, d) == QDates.yearmonthleapday(qdt)
+                    ds += 1
                 end
             end
         end

@@ -16,11 +16,6 @@ function day(qdt::QDate)
     Int(cqdate[5])
 end
 
-function week(qdt::QDate)
-    cqdate = _qref(qdt)
-    Int(cqdate[6]) + 1
-end
-
 function yearmonth(qdt::QDate)
     cqdate = _qref(qdt)
     (Int(cqdate[2]), Int(cqdate[4]))

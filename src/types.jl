@@ -46,28 +46,6 @@ function QDate(periods::Union{Dates.Period,Bool}...)
     return QDate(get(y),m,l,d)
 end
 
-function daysinmonth(y::Integer, m::Integer, leap::Bool=false)
-    y1 = y
-    m1 = m + 1
-    if m1 > 12
-        y1 += 1
-        m1 = 1
-        if y1 > LAST_YEAR
-            # 2100/12 is privilleged
-            return leap ? 0 : 1
-        end
-    end
-    jdn0 = _rqref(y, m, leap)
-    if jdn0 == 0
-        0
-    elseif leap
-        _rqref(y1, m1, false) - jdn0
-    else
-        jdn1 = _rqref(y, m, true)
-        (jdn1 > 0 ? jdn1 : _rqref(y1, m1, false)) - jdn0
-    end
-end
-
 Base.eps(::QDate) = Day(1)
 
 Base.typemax(::Union{QDate,Type{QDate}}) = QDate(2100, 12, 1)

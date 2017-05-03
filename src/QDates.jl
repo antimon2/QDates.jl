@@ -35,7 +35,7 @@ import Base.Dates:
     year,
     month,
     day,
-    week,
+    dayofweek,
     days,
     yearmonth,
     monthday,
@@ -50,7 +50,7 @@ const DAYS_OFFSET = 1721425
 
 include("types.jl")
 include("accessors.jl")
-# include("query.jl")
+include("query.jl")
 # include("arithmetic.jl")
 # include("conversions.jl")
 # include("ranges.jl")
@@ -112,7 +112,7 @@ export
     year,
     month,
     day,
-    week,
+    dayofweek,
     yearmonth,
     monthday,
     yearmonthday,
@@ -120,6 +120,8 @@ export
     daysinmonth,
     today,
     isleapmonth,
+    yearmonthleap,
+    monthleapday,
     yearmonthleapday
 
 end # module
