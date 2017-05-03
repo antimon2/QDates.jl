@@ -51,7 +51,7 @@ const DAYS_OFFSET = 1721425
 include("types.jl")
 include("accessors.jl")
 include("query.jl")
-# include("arithmetic.jl")
+include("arithmetic.jl")
 # include("conversions.jl")
 # include("ranges.jl")
 # include("adjusters.jl")

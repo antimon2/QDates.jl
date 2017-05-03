@@ -71,7 +71,18 @@ end
 
 function daysinyear(qdt::QDate)
     cqdate = _qref(qdt)
-    sum(daysinmonth(cqdate[2], m, l) for m=1:12, l=false:true)
+    # sum(daysinmonth(cqdate[2], m, l) for m=1:12, l=false:true)
+    jdn0 = _rqref(Cint[cqdate[1],cqdate[2],0,1,1,0,0])
+    if cqdate[2] == 2100
+        # privilleged 2100/xx
+        _rqref(Cint[cqdate[1],cqdate[2],0,12,1,0,0]) - jdn0 + 1
+    else
+        _rqref(Cint[cqdate[1],cqdate[2]+1,0,1,1,0,0]) - jdn0
+    end
+end
+
+function monthsinyear(qdt::QDate)
+    daysinyear(qdt) ÷ 29
 end
 
 dayofyear(y::Integer, m::Integer, d::Integer) = dayofyear(y, m, false, d)
