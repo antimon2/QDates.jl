@@ -15,6 +15,11 @@ function dayofweek(qdt::QDate)
     Int(cqdate[6]) + 1
 end
 
+# define is先勝/is友引/is先負/is仏滅/is大安/is赤口
+for (dow, nm) in qdaysofweek
+    @eval ($(Symbol("is$nm")))(qdt::QDate) = dayofweek(qdt) == $dow
+end
+
 ### Months
 const 睦月,如月,弥生,卯月,皐月,水無月 = 1,2,3,4,5,6
 const 文月,葉月,長月,神無月,霜月,師走 = 7,8,9,10,11,12

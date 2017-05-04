@@ -35,6 +35,8 @@ for (i,qdt) in enumerate([mtk,ksrg,yyi,udk,stk,lstk,mndk,fdk,hdk,ngtk,kmndk,smtk
     @test QDates.daysinmonth(qdt) == daysinmonth[i]
 end
 
+@test QDates.is先勝(mtk)
+
 @test QDates.isleapyear(QDates.QDate(2010)) == false
 @test QDates.isleapyear(QDates.QDate(2012)) == true
 @test QDates.isleapyear(QDates.QDate(2016)) == false

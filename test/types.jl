@@ -70,8 +70,8 @@ b = QDates.QDate(2000, 1, 1)
 # @test Dates.calendar(a) == Dates.ISOCalendar
 # @test Dates.calendar(b) == ???
 @test eps(b) == Dates.Day(1)
-@test string(typemax(QDates.QDate)) == "2100-12-01"
-@test string(typemin(QDates.QDate)) == "0445-01-01"
+@test string(typemax(QDates.QDate)) == "旧2100年12月01日"
+@test string(typemin(QDates.QDate)) == "旧0445年01月01日"
 @test typemax(QDates.QDate) - typemin(QDates.QDate) == Dates.Day(604816)
 
 # Date-QDate conversion

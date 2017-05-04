@@ -49,7 +49,7 @@ end
 
 Base.eps(::QDate) = Day(1)
 
-Base.typemax(::Union{QDate,Type{QDate}}) = QDate(2100, 12, 1)
-Base.typemin(::Union{QDate,Type{QDate}}) = QDate(445, 1, 1)
+Base.typemax(::Union{QDate,Type{QDate}}) = QDate(UTD(LAST_VALUE))
+Base.typemin(::Union{QDate,Type{QDate}}) = QDate(UTD(FIRST_VALUE))
 
 Base.isless(x::QDate, y::QDate) = isless(value(x), value(y))
