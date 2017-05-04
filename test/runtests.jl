@@ -1,7 +1,7 @@
 using QDates
 using Base.Test
 
-tests = ["types", "accessors", "query", "arithmetic"]
+tests = ["types", "accessors", "query", "arithmetic", "conversions"]
 
 for test in tests
     println("start testing: $test.jl")
