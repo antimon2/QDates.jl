@@ -1,7 +1,9 @@
 # ranges.jl
 
+Base.colon(start::QDate, stop::QDate) = StepRange(start, Day(1), stop)
+
 # Given a start and end date, how many steps/periods are in between
-Dates.guess(a::QDate, b::QDate, c) = Int64(div(Int64(b - a), days(c)))
+Dates.guess(a::QDate, b::QDate, c) = Int64(div(value(b - a), days(c)))
 
 function Dates.len(a::QDate,b::QDate,c)
     lo, hi, st = min(a,b), max(a,b), abs(c)

@@ -1,121 +1,118 @@
 # ranges.jl
 
-function test_almost_all_combos()
-    let T=QDates.QDate
-        f1 = T(2014); l1 = T(2013,12,30)
-        f2 = T(2014); l2 = T(2014)
-        f3 = T(1970); l3 = T(2020)
-        # f4 = typemin(T); l4 = typemax(T)
+let T=QDates.QDate
+    f1 = T(1914); l1 = T(1913,12,30)
+    f2 = T(2014); l2 = T(2014)
+    f3 = T(1970); l3 = T(2020)
+    # f4 = typemin(T); l4 = typemax(T)
 
-        for P in (Dates.Day, Dates.Month, Dates.Year)
-            for pos_step in (P(1),P(2),P(50))
-                # empty range
-                dr = f1:pos_step:l1
-                @test length(dr) == 0
-                @test isempty(dr)
-                @test first(dr) == f1
-                @test last(dr) < f1
-                @test length([i for i in dr]) == 0
-                @test_throws ArgumentError minimum(dr)
-                @test_throws ArgumentError maximum(dr)
-                @test_throws BoundsError dr[1]
-                @test findin(dr,dr) == Int64[]
-                @test [dr;] == T[]
-                @test isempty(reverse(dr))
-                @test length(reverse(dr)) == 0
-                @test first(reverse(dr)) < f1
-                @test last(reverse(dr)) >= f1
+    for P in (Dates.Day, Dates.Month, Dates.Year)
+        for pos_step in (P(1),P(2),P(50))
+            # empty range
+            dr = f1:pos_step:l1
+            @test length(dr) == 0
+            @test isempty(dr)
+            @test first(dr) == f1
+            @test last(dr) < f1
+            @test length([i for i in dr]) == 0
+            @test_throws ArgumentError minimum(dr)
+            @test_throws ArgumentError maximum(dr)
+            @test_throws BoundsError dr[1]
+            @test findin(dr,dr) == Int64[]
+            @test [dr;] == T[]
+            @test isempty(reverse(dr))
+            @test length(reverse(dr)) == 0
+            @test first(reverse(dr)) < f1
+            @test last(reverse(dr)) >= f1
+            @test issorted(dr)
+            @test sortperm(dr) == 1:1:0
+            @test !(f1 in dr)
+            @test !(l1 in dr)
+            @test !(f1-pos_step in dr)
+            @test !(l1+pos_step in dr)
+
+            # for (f,l) in ((f2,l2),(f3,l3),(f4,l4))
+            for (f,l) in ((f2,l2),(f3,l3))
+                dr = f:pos_step:l
+                len = length(dr)
+                @test len > 0
+                @test typeof(len) <: Int64
+                @test !isempty(dr)
+                @test first(dr) == f
+                @test last(dr) <= l
+                @test minimum(dr) == first(dr)
+                @test maximum(dr) == last(dr)
+                @test dr[1] == f
+                @test dr[end] <= l
+                @test next(dr,start(dr)) == (first(dr),1)
+
+                if len < 10000
+                    dr1 = [i for i in dr]
+                    @test length(dr1) == len
+                    @test findin(dr,dr) == [1:len;]
+                    @test length([dr;]) == len
+                end
+                @test !isempty(reverse(dr))
+                @test length(reverse(dr)) == len
+                @test last(reverse(dr)) == f
                 @test issorted(dr)
-                @test sortperm(dr) == 1:1:0
-                @test !(f1 in dr)
-                @test !(l1 in dr)
-                @test !(f1-pos_step in dr)
-                @test !(l1+pos_step in dr)
+                @test f in dr
 
-                # for (f,l) in ((f2,l2),(f3,l3),(f4,l4))
-                for (f,l) in ((f2,l2),(f3,l3))
-                    dr = f:pos_step:l
-                    len = length(dr)
-                    @test len > 0
-                    @test typeof(len) <: Int64
-                    @test !isempty(dr)
-                    @test first(dr) == f
-                    @test last(dr) <= l
-                    @test minimum(dr) == first(dr)
-                    @test maximum(dr) == last(dr)
-                    @test dr[1] == f
-                    @test dr[end] <= l
-                    @test next(dr,start(dr)) == (first(dr),1)
-
-                    if len < 10000
-                        dr1 = [i for i in dr]
-                        @test length(dr1) == len
-                        @test findin(dr,dr) == [1:len;]
-                        @test length([dr;]) == len
-                    end
-                    @test !isempty(reverse(dr))
-                    @test length(reverse(dr)) == len
-                    @test last(reverse(dr)) == f
-                    @test issorted(dr)
-                    @test f in dr
-
-                end
             end
-            for neg_step in (P(-1),P(-2),P(-50))
-                # empty range
-                dr = l1:neg_step:f1
-                @test length(dr) == 0
-                @test isempty(dr)
-                @test first(dr) == l1
-                @test last(dr) > l1
-                @test length([i for i in dr]) == 0
-                @test_throws ArgumentError minimum(dr)
-                @test_throws ArgumentError maximum(dr)
-                @test_throws BoundsError dr[1]
-                @test findin(dr,dr) == Int64[]
-                @test [dr;] == T[]
-                @test isempty(reverse(dr))
-                @test length(reverse(dr)) == 0
-                @test first(reverse(dr)) > l1
-                @test last(reverse(dr)) <= l1
-                @test !issorted(dr)
-                @test sortperm(dr) == 0:-1:1
-                @test !(l1 in dr)
-                @test !(l1 in dr)
-                @test !(l1-neg_step in dr)
-                @test !(l1+neg_step in dr)
+        end
+        for neg_step in (P(-1),P(-2),P(-50))
+            # empty range
+            dr = l1:neg_step:f1
+            @test length(dr) == 0
+            @test isempty(dr)
+            @test first(dr) == l1
+            @test last(dr) > l1
+            @test length([i for i in dr]) == 0
+            @test_throws ArgumentError minimum(dr)
+            @test_throws ArgumentError maximum(dr)
+            @test_throws BoundsError dr[1]
+            @test findin(dr,dr) == Int64[]
+            @test [dr;] == T[]
+            @test isempty(reverse(dr))
+            @test length(reverse(dr)) == 0
+            @test first(reverse(dr)) > l1
+            @test last(reverse(dr)) <= l1
+            # @test !issorted(dr)
+            # @test sortperm(dr) == 0:-1:1
+            @test !(l1 in dr)
+            @test !(l1 in dr)
+            @test !(l1-neg_step in dr)
+            @test !(l1+neg_step in dr)
 
-                # for (f,l) in ((f2,l2),(f3,l3),(f4,l4))
-                for (f,l) in ((f2,l2),(f3,l3))
-                    dr = l:neg_step:f
-                    len = length(dr)
-                    @test len > 0
-                    @test typeof(len) <: Int64
-                    @test !isempty(dr)
-                    @test first(dr) == l
-                    @test last(dr) >= f
-                    @test minimum(dr) == last(dr)
-                    @test maximum(dr) == first(dr)
-                    @test dr[1] == l
-                    @test dr[end] >= f
-                    @test next(dr,start(dr)) == (first(dr),1)
+            # for (f,l) in ((f2,l2),(f3,l3),(f4,l4))
+            for (f,l) in ((f2,l2),(f3,l3))
+                dr = l:neg_step:f
+                len = length(dr)
+                @test len > 0
+                @test typeof(len) <: Int64
+                @test !isempty(dr)
+                @test first(dr) == l
+                @test last(dr) >= f
+                @test minimum(dr) == last(dr)
+                @test maximum(dr) == first(dr)
+                @test dr[1] == l
+                @test dr[end] >= f
+                @test next(dr,start(dr)) == (first(dr),1)
 
-                    if len < 10000
-                        dr1 = [i for i in dr]
-                        @test length(dr1) == len
-                        @test findin(dr,dr) == [1:len;]
-                        @test length([dr;]) == len
-                    end
-                    @test !isempty(reverse(dr))
-                    @test length(reverse(dr)) == len
-                    @test !issorted(dr)
-                    @test l in dr
+                if len < 10000
+                    dr1 = [i for i in dr]
+                    @test length(dr1) == len
+                    @test findin(dr,dr) == [1:len;]
+                    @test length([dr;]) == len
                 end
+                @test !isempty(reverse(dr))
+                @test length(reverse(dr)) == len
+                # @test !issorted(dr)
+                @test l in dr
             end
         end
     end
 end
-test_almost_all_combos()
 
 # All the range representations we want to test
 # Date ranges
