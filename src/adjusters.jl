@@ -17,13 +17,17 @@ function lastdayofmonth(qdt::QDate)
     return QDate(UTD(value(qdt) + daysinmonth(y, m, l) - d))
 end
 
+if isempty(methods(Dates.DateFunction, (Function, QDate)))
+    Dates.DateFunction(f::ANY, qdt::QDate) = Dates.DateFunction(f, false, qdt)
+end
+
 # Return the next TimeType that falls on dow
-ISQDAYOFWEEK = Dict(先勝 => Dates.DateFunction(is先勝, false, Base.typemin(QDate)),
-                    友引 => Dates.DateFunction(is友引, false, Base.typemin(QDate)),
-                    先負 => Dates.DateFunction(is先負, false, Base.typemin(QDate)),
-                    仏滅 => Dates.DateFunction(is仏滅, false, Base.typemin(QDate)),
-                    大安 => Dates.DateFunction(is大安, false, Base.typemin(QDate)),
-                    赤口 => Dates.DateFunction(is赤口, false, Base.typemin(QDate)))
+ISQDAYOFWEEK = Dict(先勝 => Dates.DateFunction(is先勝, Base.typemin(QDate)),
+                    友引 => Dates.DateFunction(is友引, Base.typemin(QDate)),
+                    先負 => Dates.DateFunction(is先負, Base.typemin(QDate)),
+                    仏滅 => Dates.DateFunction(is仏滅, Base.typemin(QDate)),
+                    大安 => Dates.DateFunction(is大安, Base.typemin(QDate)),
+                    赤口 => Dates.DateFunction(is赤口, Base.typemin(QDate)))
 
 Dates.tonext(qdt::QDate, dow::Int; same::Bool=false) = Dates.adjust(ISQDAYOFWEEK[dow], same ? qdt : qdt + Day(1), Day(1), 12)
 

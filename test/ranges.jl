@@ -210,3 +210,7 @@ d = QDates.QDate(2020,1,1)
 @test length(QDates.QDate(2000):Dates.Year(-10):QDates.QDate(1900)) == 11
 @test length(QDates.QDate(2000,6,23):Dates.Year(-10):QDates.QDate(1900,2,28)) == 11
 @test length(QDates.QDate(2000,1,1):Dates.Year(1):QDates.QDate(2000,2,1)) == 1
+
+# All leap months/years in 20th century
+@test length(filter(QDates.isleapmonth, QDates.QDate(1901):Dates.Month(1):QDates.QDate(2000))) == 
+      length(filter(QDates.isleapyear, QDates.QDate(1901):Dates.Year(1):QDates.QDate(2000))) == 36

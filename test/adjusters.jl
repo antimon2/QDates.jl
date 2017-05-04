@@ -1,5 +1,7 @@
 # adjusters.jl
 
+using Compat
+
 #trunc
 qdt = QDates.QDate(2012,12,21)
 @test trunc(qdt, Dates.Year) == QDates.QDate(2012)
@@ -78,7 +80,8 @@ qdt = QDates.QDate(2017,5,3)
 @test Dates.tonext(QDates.isleapmonth, qdt) == QDates.QDate(2017,5,true,1)
 @test Dates.tonext(QDates.isleapmonth, qdt; step=Dates.Month(1)) == QDates.QDate(2017,5,true,3)
 
-@test Dates.tonext(x->!QDates.is大安(x), qdt; negate=true) == QDates.QDate(2017,5,7)
+# @test Dates.tonext(x->!QDates.is大安(x), qdt; negate=true) == QDates.QDate(2017,5,7)
+@test Dates.tonext(!(x->!QDates.is大安(x)), qdt) == QDates.QDate(2017,5,7)
 # Reach adjust limit
 @test_throws ArgumentError Dates.tonext(QDates.is大安, qdt; limit=3)
 
@@ -122,38 +125,3 @@ qdt = QDates.QDate(2017,5,3)
 @test Dates.tolast(qdt, QDates.仏滅, of=Dates.Year) == QDates.QDate(2017,12,29)
 @test Dates.tolast(qdt, QDates.大安, of=Dates.Year) == QDates.QDate(2017,12,30)
 @test Dates.tolast(qdt, QDates.赤口, of=Dates.Year) == QDates.QDate(2017,12,25)
-
-# recur
-startdate = QDates.QDate(2014,1,1)
-stopdate = QDates.QDate(2014,2,1)
-@test length(Dates.recur(x->true,startdate:stopdate)) == 30
-@test length(Dates.recur(x->true,stopdate:Dates.Day(-1):startdate)) == 30
-
-mtk大安s2014 = [QDates.QDate(2014,1,5),QDates.QDate(2014,1,11),QDates.QDate(2014,1,17),QDates.QDate(2014,1,23),QDates.QDate(2014,1,29)]
-@test Dates.recur(QDates.is大安,startdate,stopdate) == mtk大安s2014
-@test Dates.recur(QDates.is大安,startdate:stopdate) == mtk大安s2014
-@test Dates.recur(x->!QDates.is大安(x),startdate,stopdate;negate=true) == mtk大安s2014
-
-@test_throws MethodError Dates.recur((x,y)->x+y,QDates.QDate(2013):QDates.QDate(2014))
-@test_throws MethodError Dates.DateFunction((x,y)->x+y, false, Date(0))
-@test_throws ArgumentError Dates.DateFunction((dt)->2, false, Date(0))
-@test length(Dates.recur(x->true,QDates.QDate(2013):QDates.QDate(2013,2))) == 31
-@test length(Dates.recur(x->true,QDates.QDate(2013):QDates.QDate(2013,1,1))) == 1
-@test length(Dates.recur(x->true,QDates.QDate(2013):QDates.QDate(2013,1,2))) == 2
-@test length(Dates.recur(x->true,QDates.QDate(2013):QDates.QDate(2013,1,3))) == 3
-@test length(Dates.recur(x->true,QDates.QDate(2013):QDates.QDate(2013,1,4))) == 4
-@test length(Dates.recur(x->true,QDates.QDate(2013):QDates.QDate(2013,1,5))) == 5
-@test length(Dates.recur(x->true,QDates.QDate(2013):QDates.QDate(2013,1,6))) == 6
-@test length(Dates.recur(x->true,QDates.QDate(2013):QDates.QDate(2013,1,7))) == 7
-@test length(Dates.recur(x->true,QDates.QDate(2013):QDates.QDate(2013,1,8))) == 8
-@test length(Dates.recur(x->true,QDates.QDate(2013):Dates.Month(1):QDates.QDate(2013,1,1))) == 1
-@test length(Dates.recur(x->true,QDates.QDate(2013):Dates.Day(-1):QDates.QDate(2012,1,1))) == 385
-# Empty range
-@test length(Dates.recur(x->true,QDates.QDate(2013):QDates.QDate(2012,1,1))) == 0
-
-# All leap months/years in 20th century
-@test length(Dates.recur(QDates.QDate(1901):Dates.Month(1):QDates.QDate(2000)) do x
-    QDates.isleapmonth(x)
-end) == length(Dates.recur(QDates.QDate(1901):Dates.Year(1):QDates.QDate(2000)) do x
-    QDates.isleapyear(x)
-end) == 36
