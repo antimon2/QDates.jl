@@ -2,8 +2,16 @@
 
 immutable QDate <: TimeType
     instant::UTInstant{Day}
-    QDate(instant::UTInstant{Day}) = new(instant)
+    QDate(instant::UTInstant{Day}) = new(_check_instant(instant))
 end
+@inline function _check_instant(instant::UTInstant{Day})
+    val = instant.periods.value
+    if !(FIRST_VALUE <= val <= LAST_VALUE)
+        throw(ArgumentError("Instant value: $val out of range ($FIRST_VALUE:$LAST_VALUE)"))
+    end
+    instant
+end
+
 @inline QDate(year::Integer, month::Integer=1, day::Integer=1) = QDate(year, month, false, day)
 function QDate(year::Integer, month::Integer, leap::Bool, day::Integer)
     # jdn = _rqref(year, month, leap, day)
@@ -21,13 +29,6 @@ end
 @inline function _rqref(year::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
     _rqref(Cint[FIRST_VALUE+DAYS_OFFSET,year,0,month,day,0,leap])
 end
-
-function _check_value(value::Int)
-    if !(FIRST_VALUE <= value <= LAST_VALUE)
-        throw(DomainError())
-    end
-end
-@inline _check_value(instant::UTInstant{Day}) = _check_value(instant.periods.value)
 
 @inline QDate(y::Year, m::Month=Month(1), d::Day=Day(1)) = QDate(value(y), value(m), false, value(d))
 @inline QDate(y::Year, m::Month, l::Bool, d::Day=Day(1)) = QDate(value(y), value(m), l, value(d))

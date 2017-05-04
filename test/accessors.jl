@@ -25,7 +25,8 @@ function test_qdates(from,to)
         end
     end
 end
-test_qdates(445,2100)
+# test_qdates(445,2100)
+test_qdates(1970,2020)
 
 # broadcasting
 a = QDates.QDate(2014,1,1)

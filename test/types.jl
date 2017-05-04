@@ -52,7 +52,10 @@ test = QDates.QDate(2017,1,1)
 @test_throws InexactError QDates.QDate(1.2f0,1.f0,1.f0)
 @test_throws InexactError QDates.QDate(3//4,Rational(1),Rational(1)) == test
 
-# Months, days, hours, minutes, seconds, and milliseconds must be in range
+# Value must be in range
+@test_throws ArgumentError QDates.QDate(Dates.UTD(QDates.FIRST_VALUE - 1))
+@test_throws ArgumentError QDates.QDate(Dates.UTD(QDates.LAST_VALUE + 1))
+# Months and days must be in range
 @test_throws ArgumentError QDates.QDate(444,1,1)
 @test_throws ArgumentError QDates.QDate(2101,1,1)
 @test_throws ArgumentError QDates.QDate(2013,0,1)
