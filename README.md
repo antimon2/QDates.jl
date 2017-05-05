@@ -37,7 +37,7 @@ to verify that everything is functioning properly on your machine.
 `QDates` has APIs almost compatible with the standard `Dates` package.
 
 ```julia
-using QDatrs
+using QDates
 
 ### construct Kyūreki Date
 qdt = QDate(2017, 5, 1)
