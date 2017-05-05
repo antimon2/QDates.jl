@@ -1,8 +1,9 @@
 using QDates
 using Base.Test
 
-tests = ["qdates"]
+tests = ["types", "accessors", "query", "arithmetic", "conversions", "ranges", "adjusters", "rounding"]
 
 for test in tests
-    include("$(test).jl")
+    println("start testing: $test.jl")
+    @time include("$test.jl")
 end
