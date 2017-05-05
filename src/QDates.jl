@@ -1,3 +1,5 @@
+__precompile__()
+
 module QDates
 
 using Compat
@@ -60,7 +62,7 @@ include("arithmetic.jl")
 include("conversions.jl")
 include("ranges.jl")
 include("adjusters.jl")
-# include("rounding.jl")
+include("rounding.jl")
 include("io.jl")
 
 function _rqref_strict(year::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
