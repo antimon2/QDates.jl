@@ -154,3 +154,10 @@ qtoday == QDate(Dates.today())
 ## Requirement
 - [Julia](https://julialang.org) (VERSION ≥ v"0.5")
 - [Compat.jl](https://github.com/JuliaLang/Compat.jl) (for testing only)
+
+
+## Credits
+
+QDates.jl is created by @antimon2 (Shunsuke GOTOH).
+
+qref.c (included in [Calendrical module](https://www.funaba.org/code#calendrical)) by [Tadayoshi FUNABA](https://www.funaba.org/).
