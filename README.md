@@ -151,9 +151,17 @@ qtoday == QDate(Dates.today())
 
 ```
 
-## Requirement
-- [Julia](https://julialang.org) (VERSION ≥ v"0.5")
-- [Compat.jl](https://github.com/JuliaLang/Compat.jl) (for testing only)
+
+## Requirements
+
++ [Julia](https://julialang.org) (VERSION ≥ v"0.5")
++ [Compat.jl](https://github.com/JuliaLang/Compat.jl) (for testing only)
+
+
+## Limitations
+
++ Year range is 445-2100. `QDate(2101)` throws `ArgumentError`.
++ Not support 32bit-Windows.
 
 
 ## Credits
