@@ -2,8 +2,6 @@ __precompile__()
 
 module QDates
 
-using Compat
-
 # Load dependencies
 deps = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
 if isfile(deps)
