@@ -16,6 +16,19 @@ dt = Dates.Date(2017,5,1)
 @test typeof(Dates.today(Dates.Date)) <: Dates.Date
 @test typeof(Dates.today(QDates.QDate)) <: QDates.QDate
 
+# Conversions to/from Date/DateTime
+dt = Dates.Date(2017,5,26)
+dttm = Dates.DateTime(2017,5,26)
+qdt = QDates.QDate(2017,5,1)
+@test convert(Dates.Date, qdt) == dt
+@test Dates.Date(qdt) == dt
+@test convert(Dates.DateTime, qdt) == dttm
+@test Dates.DateTime(qdt) == dttm
+@test convert(QDates.QDate, dt) == qdt
+@test QDates.QDate(dt) == qdt
+@test convert(QDates.QDate, dttm) == qdt
+@test QDates.QDate(dttm) == qdt
+
 # Conversions to/from numbers
 b = QDates.QDate(2017)
 @test convert(Real,b) == 736357

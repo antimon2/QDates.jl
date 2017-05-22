@@ -8,8 +8,8 @@
 
 Base.convert(::Type{Date}, qdt::QDate) = Date(qdt.instant)
 Base.convert(::Type{QDate}, dt::Date) = QDate(dt.instant)
-Base.convert(::Type{DateTime}, qdt::QDate) = DateTime(UTM(value(qdt)*86400000))
-Base.convert(::Type{QDate}, dt::DateTime) = QDate(UTD(days(dt)))
+Base.convert(::Type{DateTime}, qdt::QDate) = DateTime(Dates.UTM(value(qdt)*86400000))
+Base.convert(::Type{QDate}, dt::DateTime) = QDate(Dates.UTD(days(dt)))
 
 Base.convert{R<:Real}(::Type{R}, qdt::QDate) = convert(R, value(qdt))
 Base.convert{R<:Real}(::Type{QDate}, x::R) = QDate(UTD(x))
