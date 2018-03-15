@@ -1,6 +1,7 @@
 # ranges.jl
+using Dates
 
-Base.colon(start::QDate, stop::QDate) = StepRange(start, Day(1), stop)
+(::Colon)(start::QDate, stop::QDate) = StepRange(start, Day(1), stop)
 
 # Given a start and end date, how many steps/periods are in between
 Dates.guess(a::QDate, b::QDate, c) = Int64(div(value(b - a), days(c)))

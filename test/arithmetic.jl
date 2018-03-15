@@ -46,17 +46,17 @@ qdt = QDates.QDate(1999,12,27)
 a = QDates.QDate(2014,1,1)
 dr = [a,a,a,a,a,a,a,a,a,a]
 b = a + Dates.Year(1)
-@test dr .+ Dates.Year(1) == repmat([b],10)
+@test dr .+ Dates.Year(1) == repeat([b],10)
 b = a + Dates.Month(1)
-@test dr .+ Dates.Month(1) == repmat([b],10)
+@test dr .+ Dates.Month(1) == repeat([b],10)
 b = a + Dates.Day(1)
-@test dr .+ Dates.Day(1) == repmat([b],10)
+@test dr .+ Dates.Day(1) == repeat([b],10)
 b = a - Dates.Year(1)
-@test dr .- Dates.Year(1) == repmat([b],10)
+@test dr .- Dates.Year(1) == repeat([b],10)
 b = a - Dates.Month(1)
-@test dr .- Dates.Month(1) == repmat([b],10)
+@test dr .- Dates.Month(1) == repeat([b],10)
 b = a - Dates.Day(1)
-@test dr .- Dates.Day(1) == repmat([b],10)
+@test dr .- Dates.Day(1) == repeat([b],10)
 
 # Month arithmetic minimizes "edit distance", or number of changes
 # needed to get a correct answer

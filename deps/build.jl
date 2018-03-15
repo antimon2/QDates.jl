@@ -3,13 +3,13 @@
 depsdir = dirname(@__FILE__)
 libfilename = "libqref.so"
 
-if is_windows()
+if Sys.iswindows()
     libfilename = "libqref.dll"
 else
-    if is_apple()
+    if Sys.isapple()
         libfilename = "libqref.dylib"
     end
-    shared_flag = is_apple() ? "-dynamiclib" : "-shared"
+    shared_flag = Sys.isapple() ? "-dynamiclib" : "-shared"
 
     cd(joinpath(depsdir, "qref"))
     run(`gcc $shared_flag -o ../$libfilename -fPIC qref.c`)

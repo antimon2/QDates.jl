@@ -1,4 +1,5 @@
 # arithmetic.jl
+using Dates
 
 function Base.:+(qdt::QDate,y::Year)
     oy,om,ol,d = yearmonthleapday(qdt)

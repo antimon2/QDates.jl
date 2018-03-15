@@ -1,6 +1,7 @@
 # ranges.jl
 
 let T=QDates.QDate
+    local f, l, dr, dr1
     f1 = T(1914); l1 = T(1913,12,30)
     f2 = T(2014); l2 = T(2014)
     f3 = T(1970); l3 = T(2020)
@@ -9,106 +10,108 @@ let T=QDates.QDate
     for P in (Dates.Day, Dates.Month, Dates.Year)
         for pos_step in (P(1),P(2),P(50))
             # empty range
-            dr = f1:pos_step:l1
-            @test length(dr) == 0
-            @test isempty(dr)
-            @test first(dr) == f1
-            @test last(dr) < f1
-            @test length([i for i in dr]) == 0
-            @test_throws ArgumentError minimum(dr)
-            @test_throws ArgumentError maximum(dr)
-            @test_throws BoundsError dr[1]
-            @test findin(dr,dr) == Int64[]
-            @test [dr;] == T[]
-            @test isempty(reverse(dr))
-            @test length(reverse(dr)) == 0
-            @test first(reverse(dr)) < f1
-            @test last(reverse(dr)) >= f1
-            @test issorted(dr)
-            @test sortperm(dr) == 1:1:0
-            @test !(f1 in dr)
-            @test !(l1 in dr)
-            @test !(f1-pos_step in dr)
-            @test !(l1+pos_step in dr)
+            let dr = f1:pos_step:l1
+                @test length(dr) == 0
+                @test isempty(dr)
+                @test first(dr) == f1
+                @test last(dr) < f1
+                @test length([i for i in dr]) == 0
+                @test_throws ArgumentError minimum(dr)
+                @test_throws ArgumentError maximum(dr)
+                @test_throws BoundsError dr[1]
+                @test findall(occursin(dr),dr) == Int64[]
+                @test [dr;] == T[]
+                @test isempty(reverse(dr))
+                @test length(reverse(dr)) == 0
+                @test first(reverse(dr)) < f1
+                @test last(reverse(dr)) >= f1
+                @test issorted(dr)
+                @test sortperm(dr) == 1:1:0
+                @test !(f1 in dr)
+                @test !(l1 in dr)
+                @test !(f1-pos_step in dr)
+                @test !(l1+pos_step in dr)
+            end
 
             # for (f,l) in ((f2,l2),(f3,l3),(f4,l4))
             for (f,l) in ((f2,l2),(f3,l3))
-                dr = f:pos_step:l
-                len = length(dr)
-                @test len > 0
-                @test typeof(len) <: Int64
-                @test !isempty(dr)
-                @test first(dr) == f
-                @test last(dr) <= l
-                @test minimum(dr) == first(dr)
-                @test maximum(dr) == last(dr)
-                @test dr[1] == f
-                @test dr[end] <= l
-                @test next(dr,start(dr)) == (first(dr),1)
+                let dr = f:pos_step:l, len = length(dr)
+                    @test len > 0
+                    @test typeof(len) <: Int64
+                    @test !isempty(dr)
+                    @test first(dr) == f
+                    @test last(dr) <= l
+                    @test minimum(dr) == first(dr)
+                    @test maximum(dr) == last(dr)
+                    @test dr[1] == f
+                    @test dr[end] <= l
+                    @test next(dr,start(dr)) == (first(dr),1)
 
-                if len < 10000
-                    dr1 = [i for i in dr]
-                    @test length(dr1) == len
-                    @test findin(dr,dr) == [1:len;]
-                    @test length([dr;]) == len
+                    if len < 10000
+                        dr1 = [i for i in dr]
+                        @test length(dr1) == len
+                        @test findall(occursin(dr),dr) == [1:len;]
+                        @test length([dr;]) == len
+                    end
+                    @test !isempty(reverse(dr))
+                    @test length(reverse(dr)) == len
+                    @test last(reverse(dr)) == f
+                    @test issorted(dr)
+                    @test f in dr
                 end
-                @test !isempty(reverse(dr))
-                @test length(reverse(dr)) == len
-                @test last(reverse(dr)) == f
-                @test issorted(dr)
-                @test f in dr
 
             end
         end
         for neg_step in (P(-1),P(-2),P(-50))
             # empty range
-            dr = l1:neg_step:f1
-            @test length(dr) == 0
-            @test isempty(dr)
-            @test first(dr) == l1
-            @test last(dr) > l1
-            @test length([i for i in dr]) == 0
-            @test_throws ArgumentError minimum(dr)
-            @test_throws ArgumentError maximum(dr)
-            @test_throws BoundsError dr[1]
-            @test findin(dr,dr) == Int64[]
-            @test [dr;] == T[]
-            @test isempty(reverse(dr))
-            @test length(reverse(dr)) == 0
-            @test first(reverse(dr)) > l1
-            @test last(reverse(dr)) <= l1
-            # @test !issorted(dr)
-            # @test sortperm(dr) == 0:-1:1
-            @test !(l1 in dr)
-            @test !(l1 in dr)
-            @test !(l1-neg_step in dr)
-            @test !(l1+neg_step in dr)
+            let dr = l1:neg_step:f1
+                @test length(dr) == 0
+                @test isempty(dr)
+                @test first(dr) == l1
+                @test last(dr) > l1
+                @test length([i for i in dr]) == 0
+                @test_throws ArgumentError minimum(dr)
+                @test_throws ArgumentError maximum(dr)
+                @test_throws BoundsError dr[1]
+                @test findall(occursin(dr),dr) == Int64[]
+                @test [dr;] == T[]
+                @test isempty(reverse(dr))
+                @test length(reverse(dr)) == 0
+                @test first(reverse(dr)) > l1
+                @test last(reverse(dr)) <= l1
+                # @test !issorted(dr)
+                # @test sortperm(dr) == 0:-1:1
+                @test !(l1 in dr)
+                @test !(l1 in dr)
+                @test !(l1-neg_step in dr)
+                @test !(l1+neg_step in dr)
+            end
 
             # for (f,l) in ((f2,l2),(f3,l3),(f4,l4))
             for (f,l) in ((f2,l2),(f3,l3))
-                dr = l:neg_step:f
-                len = length(dr)
-                @test len > 0
-                @test typeof(len) <: Int64
-                @test !isempty(dr)
-                @test first(dr) == l
-                @test last(dr) >= f
-                @test minimum(dr) == last(dr)
-                @test maximum(dr) == first(dr)
-                @test dr[1] == l
-                @test dr[end] >= f
-                @test next(dr,start(dr)) == (first(dr),1)
+                let dr = l:neg_step:f, len = length(dr)
+                    @test len > 0
+                    @test typeof(len) <: Int64
+                    @test !isempty(dr)
+                    @test first(dr) == l
+                    @test last(dr) >= f
+                    @test minimum(dr) == last(dr)
+                    @test maximum(dr) == first(dr)
+                    @test dr[1] == l
+                    @test dr[end] >= f
+                    @test next(dr,start(dr)) == (first(dr),1)
 
-                if len < 10000
-                    dr1 = [i for i in dr]
-                    @test length(dr1) == len
-                    @test findin(dr,dr) == [1:len;]
-                    @test length([dr;]) == len
+                    if len < 10000
+                        dr1 = [i for i in dr]
+                        @test length(dr1) == len
+                        @test findall(occursin(dr),dr) == [1:len;]
+                        @test length([dr;]) == len
+                    end
+                    @test !isempty(reverse(dr))
+                    @test length(reverse(dr)) == len
+                    # @test !issorted(dr)
+                    @test l in dr
                 end
-                @test !isempty(reverse(dr))
-                @test length(reverse(dr)) == len
-                # @test !issorted(dr)
-                @test l in dr
             end
         end
     end
@@ -135,7 +138,7 @@ drs = Any[dr,dr1,dr2,dr3,dr4,dr9,dr10,
           dr12,dr13,dr15,dr16,dr20]
 
 @test map(length,drs) == map(x->size(x)[1],drs)
-@test all(x->findin(x,x) == [1:length(x);], drs[1:4])
+@test all(x->findall(occursin(x),x) == [1:length(x);], drs[1:4])
 @test isempty(dr2)
 @test all(x->reverse(x) == last(x):-step(x):first(x),drs)
 @test all(x->minimum(x) == (step(x) < zero(step(x)) ? last(x) : first(x)),drs[4:end])
@@ -149,7 +152,7 @@ end
 # @test_throws MethodError dr + 1
 a = QDates.QDate(2014,1,1)
 b = QDates.QDate(2014,2,1)
-@test map!(x->x+Dates.Day(1),Array{QDates.QDate}(30),dr) == [(a+Dates.Day(1)):(b+Dates.Day(1));]
+@test map!(x->x+Dates.Day(1),Array{QDates.QDate}(undef, 30),dr) == [(a+Dates.Day(1)):(b+Dates.Day(1));]
 @test map(x->x+Dates.Day(1),dr) == [(a+Dates.Day(1)):(b+Dates.Day(1));]
 
 @test map(x->a in x,drs[1:4]) == [true,true,false,true]

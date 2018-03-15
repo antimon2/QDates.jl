@@ -77,7 +77,7 @@ b = QDates.QDate(2000, 1, 1)
 # Date-QDate conversion
 @test QDates.QDate(a) == b
 @test Dates.Date(b) == a
-@test a != b    # cannot promote
+@test a == b  # promote
 
 c = QDates.QDate(2001)
 @test b < c

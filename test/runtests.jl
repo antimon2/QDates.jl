@@ -1,5 +1,6 @@
+using Dates
 using QDates
-using Base.Test
+using Test
 
 tests = ["types", "accessors", "query", "arithmetic", "conversions", "ranges", "adjusters", "rounding"]
 

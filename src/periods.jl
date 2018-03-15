@@ -1,4 +1,5 @@
 # periods.jl
+using Dates
 
 function Base.:+(x::QDate, y::Dates.CompoundPeriod)
     for p in y.periods

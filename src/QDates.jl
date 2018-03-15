@@ -10,12 +10,12 @@ else
     error("QDates not properly installed. Please run Pkg.build(\"QDates\")")
 end
 
-@assert isdefined(:libqref)
+@assert @isdefined libqref
 
 # libqref.qref
 function _qref(jdn)
-    cqdate = Array{Cint}(7)
-    ccall((:qref, libqref), Void, (Cint, Ref{Cint}), jdn, cqdate)
+    cqdate = Array{Cint}(undef, 7)
+    ccall((:qref, libqref), Nothing, (Cint, Ref{Cint}), jdn, cqdate)
     cqdate
 end
 
@@ -24,27 +24,7 @@ function _rqref(cqdate::Array{Cint,1})
     Int(ccall((:rqref, libqref), Cint, (Ref{Cint},), cqdate))
 end
 
-import Base.Dates:
-    Date,
-    TimeType,
-    UTD,
-    UTInstant,
-    Year,
-    Month,
-    Day,
-    year,
-    month,
-    day,
-    dayofweek,
-    days,
-    yearmonth,
-    monthday,
-    yearmonthday,
-    firstdayofyear,
-    lastdayofyear,
-    firstdayofmonth,
-    lastdayofmonth,
-    value
+using Dates
 
 const FIRST_VALUE = 162193
 const LAST_VALUE = 767009

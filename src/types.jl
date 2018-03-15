@@ -1,6 +1,9 @@
 # types.jl
+using Dates:
+    TimeType,
+    UTInstant
 
-immutable QDate <: TimeType
+struct QDate <: TimeType
     instant::UTInstant{Day}
     QDate(instant::UTInstant{Day}) = new(_check_instant(instant))
 end
@@ -33,18 +36,19 @@ end
 @inline QDate(y::Year, m::Month=Month(1), d::Day=Day(1)) = QDate(value(y), value(m), false, value(d))
 @inline QDate(y::Year, m::Month, l::Bool, d::Day=Day(1)) = QDate(value(y), value(m), l, value(d))
 
-function QDate(periods::Union{Dates.Period,Bool}...)
-    y = Nullable{Year}(); m = Month(1); l = false; d = Day(1)
+function QDate(periods::Union{Period,Bool}...)
+    y = Year(0); m = Month(1); l = false; d = Day(1)
+    _isyearspecified = false
     for p in periods
-        isa(p, Year) && (y = Nullable{Year}(p))
+        isa(p, Year) && (_isyearspecified = true; y = p::Year)
         isa(p, Month) && (m = p::Month)
         isa(p, Bool) && (l = p::Bool)
         isa(p, Day) && (d = p::Day)
     end
-    if isnull(y)
+    if !_isyearspecified
         throw(ArgumentError("Dates.Year must be specified"))
     end
-    return QDate(get(y),m,l,d)
+    return QDate(y, m, l, d)
 end
 
 Base.eps(::QDate) = Day(1)
@@ -53,3 +57,6 @@ Base.typemax(::Union{QDate,Type{QDate}}) = QDate(UTD(LAST_VALUE))
 Base.typemin(::Union{QDate,Type{QDate}}) = QDate(UTD(FIRST_VALUE))
 
 Base.isless(x::QDate, y::QDate) = isless(value(x), value(y))
+
+Base.promote_rule(::Type{QDate}, x::Type{Date}) = Date
+Base.promote_rule(::Type{QDate}, x::Type{DateTime}) = DateTime

@@ -31,7 +31,7 @@ test_qdates(1970,2020)
 # broadcasting
 a = QDates.QDate(2014,1,1)
 dr = [a,a,a,a,a,a,a,a,a,a]
-@test QDates.year.(dr) == repmat([2014],10)
-@test QDates.month.(dr) == repmat([1],10)
-@test QDates.isleapmonth.(dr) == repmat([false],10)
-@test QDates.day.(dr) == repmat([1],10)
+@test QDates.year.(dr) == repeat([2014],10)
+@test QDates.month.(dr) == repeat([1],10)
+@test QDates.isleapmonth.(dr) == repeat([false],10)
+@test QDates.day.(dr) == repeat([1],10)

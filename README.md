@@ -155,7 +155,9 @@ qtoday == QDate(Dates.today())
 
 ## Requirements
 
-+ [Julia](https://julialang.org) (VERSION ≥ v"0.5")
++ [Julia](https://julialang.org) (VERSION ≥ v"0.7")
+    + QDates v0.0.2 is available for Julia of VERSION < v"0.7"
++ Dates module
 + [Compat.jl](https://github.com/JuliaLang/Compat.jl) (for testing only)
 
 
