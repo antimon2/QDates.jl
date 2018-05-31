@@ -13,11 +13,13 @@ end
 @assert @isdefined libqref
 
 # libqref.qref
-function _qref(jdn)
+function _qref(jdn::Union{Int32, UInt32})
     cqdate = Array{Cint}(undef, 7)
     ccall((:qref, libqref), Nothing, (Cint, Ref{Cint}), jdn, cqdate)
     cqdate
 end
+_qref(jdn::Signed) = _qref(jdn % Int32)
+_qref(jdn::Unsigned) = _qref(jdn % UInt32)
 
 # libqref.rqref
 function _rqref(cqdate::Array{Cint,1})

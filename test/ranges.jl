@@ -45,7 +45,11 @@ let T=QDates.QDate
                     @test maximum(dr) == last(dr)
                     @test dr[1] == f
                     @test dr[end] <= l
-                    @test next(dr,start(dr)) == (first(dr),1)
+                    @static if VERSION < v"0.7.0-DEV.5126"
+                        @test next(dr,start(dr)) == (first(dr),1)
+                    else
+                        @test iterate(dr) == (first(dr),1)
+                    end
 
                     if len < 10000
                         dr1 = [i for i in dr]
@@ -99,7 +103,11 @@ let T=QDates.QDate
                     @test maximum(dr) == first(dr)
                     @test dr[1] == l
                     @test dr[end] >= f
-                    @test next(dr,start(dr)) == (first(dr),1)
+                    @static if VERSION < v"0.7.0-DEV.5126"
+                        @test next(dr,start(dr)) == (first(dr),1)
+                    else
+                        @test iterate(dr) == (first(dr),1)
+                    end
 
                     if len < 10000
                         dr1 = [i for i in dr]
