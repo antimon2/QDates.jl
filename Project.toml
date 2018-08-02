@@ -1,0 +1,7 @@
+name = "QDates"
+uuid = "25f12f5a-a783-5f9a-af99-e55629686113"
+version = "v0.1.0"
+
+[deps]
+Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
