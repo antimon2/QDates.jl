@@ -1,5 +1,5 @@
 # conversions.jl
-using Dates
+using Compat.Dates
 
 @inline date2jdn(dt::Union{Date,QDate}) = value(dt) + DAYS_OFFSET
 @inline qdate2jdn(qdt::QDate) = date2jdn(qdt)

@@ -1,5 +1,5 @@
 # periods.jl
-using Dates
+using Compat.Dates
 
 function Base.:+(x::QDate, y::Dates.CompoundPeriod)
     for p in y.periods

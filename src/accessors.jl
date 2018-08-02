@@ -1,5 +1,5 @@
 # accessors.jl
-using Dates
+using Compat.Dates
 
 const year = Dates.year
 function year(qdt::QDate)

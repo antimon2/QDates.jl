@@ -1,5 +1,5 @@
 # query.jl
-using Dates
+using Compat.Dates
 
 ### Days of week
 const 先勝,友引,先負,仏滅,大安,赤口 = 1,2,3,4,5,6

@@ -1,6 +1,11 @@
-using Dates
+using Compat
+using Compat.Dates
 using QDates
-using Test
+using Compat.Test
+
+@static if VERSION < v"0.7.0-DEV.3977"
+    Base.repeat(a::AbstractVector, n::Int) = repmat(a, n)
+end
 
 tests = ["types", "accessors", "query", "arithmetic", "conversions", "ranges", "adjusters", "rounding"]
 

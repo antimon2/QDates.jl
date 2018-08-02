@@ -1,5 +1,5 @@
 # types.jl
-using Dates:
+using Compat.Dates:
     TimeType,
     UTInstant
 

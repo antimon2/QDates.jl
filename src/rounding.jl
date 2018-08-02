@@ -1,5 +1,5 @@
 # rounding.jl
-using Dates
+using Compat.Dates
 
 function Base.floor(qdt::QDate, p::Dates.Year)
     value(p) < 1 && throw(DomainError())
