@@ -1,15 +1,16 @@
 # build.jl
+using Compat
 
 depsdir = dirname(@__FILE__)
 libfilename = "libqref.so"
 
-if Sys.iswindows()
+if Compat.Sys.iswindows()
     libfilename = "libqref.dll"
 else
-    if Sys.isapple()
+    if Compat.Sys.isapple()
         libfilename = "libqref.dylib"
     end
-    shared_flag = Sys.isapple() ? "-dynamiclib" : "-shared"
+    shared_flag = Compat.Sys.isapple() ? "-dynamiclib" : "-shared"
 
     cd(joinpath(depsdir, "qref"))
     run(`gcc $shared_flag -o ../$libfilename -fPIC qref.c`)
