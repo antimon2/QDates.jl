@@ -1,6 +1,4 @@
-@static if VERSION < v"0.7.0-rc1"
-__precompile__()
-end
+VERSION < v"0.7.0-rc1" && __precompile__()
 
 module QDates
 
