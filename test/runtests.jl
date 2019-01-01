@@ -1,10 +1,7 @@
-using Dates
-using QDates
-using Test
+module QDatesTests
 
-tests = ["types", "accessors", "query", "arithmetic", "conversions", "ranges", "adjusters", "rounding"]
+for file in readlines(joinpath(@__DIR__, "testgroups"))
+    include(file * ".jl")
+end
 
-for test in tests
-    println("start testing: $test.jl")
-    @time include("$test.jl")
 end

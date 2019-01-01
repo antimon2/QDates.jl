@@ -1,5 +1,13 @@
 # arithmetic.jl
 
+module ArithmeticTest
+
+using Test
+using Dates
+using QDates
+
+@testset "basic arithmetic" begin
+
 qdt = QDates.QDate(1999,12,27)
 @test qdt + Dates.Year(1) == QDates.QDate(2000,12,27)
 @test qdt + Dates.Year(100) == QDates.QDate(2099,12,27)
@@ -42,7 +50,11 @@ qdt = QDates.QDate(1999,12,27)
 @test qdt - Dates.Day(100) == QDates.QDate(1999,9,17)
 @test qdt - Dates.Day(1000) == QDates.QDate(1997,4,2)
 
+end
+
 # Vectorized arithmetic
+@testset "Vectorized arithmetic" begin
+
 a = QDates.QDate(2014,1,1)
 dr = [a,a,a,a,a,a,a,a,a,a]
 b = a + Dates.Year(1)
@@ -109,3 +121,7 @@ t2 = [QDates.QDate(2009,1,2) QDates.QDate(2009,2,2) QDates.QDate(2010,1,3); QDat
 # Array{TimeType}, Array{TimeType}
 @test t2 .- t1 == [Dates.Day(1) Dates.Day(30) Dates.Day(384); Dates.Day(384) Dates.Day(30) Dates.Day(1)]
 @test t2 - t1 == [Dates.Day(1) Dates.Day(30) Dates.Day(384); Dates.Day(384) Dates.Day(30) Dates.Day(1)]
+
+end
+
+end

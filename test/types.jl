@@ -1,3 +1,11 @@
+module TypesTest
+
+using Test
+using Dates
+using QDates
+
+@testset "daysinmonth" begin
+
 @test QDates.daysinmonth(2001,1) == 30
 @test QDates.daysinmonth(2001,2) == 30
 @test QDates.daysinmonth(2001,3) == 30
@@ -14,14 +22,22 @@
 @test QDates.daysinmonth(2002,1) == 30
 @test QDates.daysinmonth(2002,1,true) == 0
 
+end
+
 # Create "test" check manually
 test = QDates.QDate(Dates.UTD(734909))
 # Test Date construction by parts
+@testset "QDate construction by parts" begin
+
 @test QDates.QDate(2013) == test
 @test QDates.QDate(2013,1) == test
 @test QDates.QDate(2013,1,1) == test
 
+end
+
 # Test various input types for Date/DateTime
+@testset "various input types for QDate" begin
+
 test = QDates.QDate(2017,1,1)
 @test QDates.QDate(2017,Int8(1),Int8(1)) == test
 @test QDates.QDate(2017,UInt8(1),UInt8(1)) == test
@@ -64,7 +80,11 @@ test = QDates.QDate(2017,1,1)
 @test_throws ArgumentError QDates.QDate(2013,1,32)
 @test_throws ArgumentError QDates.QDate(2017,6,true,1)
 
+end
+
 # Test DateTime traits
+@testset "DateTime traits" begin
+
 a = Dates.Date(2000, 2, 5)
 b = QDates.QDate(2000, 1, 1)
 # @test Dates.calendar(a) == Dates.ISOCalendar
@@ -74,7 +94,13 @@ b = QDates.QDate(2000, 1, 1)
 @test string(typemin(QDates.QDate)) == "旧0445年01月01日"
 @test typemax(QDates.QDate) - typemin(QDates.QDate) == Dates.Day(604816)
 
+end
+
 # Date-QDate conversion
+@testset "Date-QDate conversion/promotion" begin
+
+a = Dates.Date(2000, 2, 5)
+b = QDates.QDate(2000, 1, 1)
 @test QDates.QDate(a) == b
 @test Dates.Date(b) == a
 @test a == b  # promote
@@ -99,3 +125,7 @@ l = true  # Leap-Month
 @test_throws ArgumentError QDates.QDate(y,l)
 
 @test isfinite(QDates.QDate)
+
+end
+
+end

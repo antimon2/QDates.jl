@@ -1,5 +1,13 @@
 # ranges.jl
 
+module RangesTest
+
+using Test
+using Dates
+using QDates
+
+@testset "ranges" begin
+
 let T=QDates.QDate
     local f, l, dr, dr1
     f1 = T(1914); l1 = T(1913,12,30)
@@ -225,3 +233,7 @@ d = QDates.QDate(2020,1,1)
 # All leap months/years in 20th century
 @test length(filter(QDates.isleapmonth, QDates.QDate(1901):Dates.Month(1):QDates.QDate(2000))) == 
       length(filter(QDates.isleapyear, QDates.QDate(1901):Dates.Year(1):QDates.QDate(2000))) == 36
+
+end
+
+end
