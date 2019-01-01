@@ -1,7 +1,5 @@
 # adjusters.jl
 
-using Compat
-
 #trunc
 qdt = QDates.QDate(2012,12,21)
 @test trunc(qdt, Dates.Year) == QDates.QDate(2012)

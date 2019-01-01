@@ -1,8 +1,4 @@
-VERSION < v"0.7.0-rc1" && __precompile__()
-
 module QDates
-
-using Compat
 
 # Load dependencies
 deps = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
@@ -12,11 +8,7 @@ else
     error("QDates not properly installed. Please run Pkg.build(\"QDates\")")
 end
 
-@static if VERSION < v"0.7.0-DEV.518"
-    @assert isdefined(:libqref)
-else
-    @assert @isdefined libqref
-end
+@assert @isdefined libqref
 
 # libqref.qref
 function _qref(jdn::Union{Int32, UInt32})
@@ -32,7 +24,17 @@ function _rqref(cqdate::Array{Cint,1})
     Int(ccall((:rqref, libqref), Cint, (Ref{Cint},), cqdate))
 end
 
-using Compat.Dates
+import Dates
+import Dates:
+    year,
+    month,
+    day,
+    dayofweek,
+    yearmonth,
+    monthday,
+    yearmonthday,
+    days,
+    daysinmonth
 
 const FIRST_VALUE = 162193
 const LAST_VALUE = 767009

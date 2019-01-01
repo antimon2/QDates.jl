@@ -1,5 +1,4 @@
 # arithmetic.jl
-using Compat.Dates
 
 function Base.:+(qdt::QDate,y::Year)
     oy,om,ol,d = yearmonthleapday(qdt)

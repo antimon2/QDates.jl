@@ -1,5 +1,4 @@
 # ranges.jl
-using Compat.Dates
 
 (::Colon)(start::QDate, stop::QDate) = StepRange(start, Day(1), stop)
 

@@ -1,6 +1,5 @@
 # adjusters.jl
-using Compat.Dates
-using Compat.Dates: UTD, value
+using Dates: UTD, value
 
 ### truncation
 Base.trunc(qdt::QDate, ::Type{Year}) = firstdayofyear(qdt)
