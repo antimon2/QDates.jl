@@ -45,10 +45,10 @@ let T=QDates.QDate
                     @test maximum(dr) == last(dr)
                     @test dr[1] == f
                     @test dr[end] <= l
-                    @static if VERSION < v"0.7.0-DEV.5126"
-                        @test next(dr,start(dr)) == (first(dr),1)
+                    @static if VERSION < v"1.1.0-DEV.480"
+                        @test iterate(dr) == (first(dr), 1)
                     else
-                        @test iterate(dr) == (first(dr),1)
+                        @test iterate(dr) == (first(dr), (length(dr), 1))
                     end
 
                     if len < 10000
@@ -103,10 +103,10 @@ let T=QDates.QDate
                     @test maximum(dr) == first(dr)
                     @test dr[1] == l
                     @test dr[end] >= f
-                    @static if VERSION < v"0.7.0-DEV.5126"
-                        @test next(dr,start(dr)) == (first(dr),1)
+                    @static if VERSION < v"1.1.0-DEV.480"
+                        @test iterate(dr) == (first(dr), 1)
                     else
-                        @test iterate(dr) == (first(dr),1)
+                        @test iterate(dr) == (first(dr), (length(dr), 1))
                     end
 
                     if len < 10000
