@@ -2,7 +2,7 @@ QDates
 ======
 
 [![Build Status](https://travis-ci.org/antimon2/QDates.jl.svg?branch=master)](https://travis-ci.org/antimon2/QDates.jl) [![Build status](https://ci.appveyor.com/api/projects/status/github/antimon2/QDates.jl?branch=master)](https://ci.appveyor.com/project/antimon2/qdates-jl/branch/master)  
-[![QDates](http://pkg.julialang.org/badges/QDates_0.5.svg)](http://pkg.julialang.org/detail/QDates) [![QDates](http://pkg.julialang.org/badges/QDates_0.6.svg)](http://pkg.julialang.org/detail/QDates)  
+<!--[![QDates](http://pkg.julialang.org/badges/QDates_0.5.svg)](http://pkg.julialang.org/detail/QDates) [![QDates](http://pkg.julialang.org/badges/QDates_0.6.svg)](http://pkg.julialang.org/detail/QDates)  -->
 [![Coverage Status](https://coveralls.io/repos/antimon2/QDates.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/antimon2/QDates.jl?branch=master) [![codecov.io](http://codecov.io/github/antimon2/QDates.jl/coverage.svg?branch=master)](http://codecov.io/github/antimon2/QDates.jl?branch=master)
 
 The **QDates** package provides Japanese "Kyūreki (旧暦)" calendrical calculations into Julia.  
@@ -11,23 +11,22 @@ The **QDates** package provides Japanese "Kyūreki (旧暦)" calendrical calcula
 
 ## Installation
 
-To install the release version, simply run
+To install the release version, simply run on the Julia Pkg REPL-mode:
 
 ```julia
-Pkg.add("QDates")
+pkg> add QDates
 ```
 
-on the Julia console. To install the latest development version, run the following command instead:
+To install the latest development version, run the following command instead:
 
 ```julia
-Pkg.clone("https://github.com/antimon2/QDates.jl.git")
-Pkg.build("QDates")
+pkg> add QDates#master
 ```
 
 Then you can run the built-in unit tests with
 
 ```julia
-Pkg.test("QDates")
+pkg> test QDates
 ```
 
 to verify that everything is functioning properly on your machine.
@@ -45,6 +44,7 @@ qdt = QDate(2017, 5, 1)
 # => 旧2017年05月01日
 
 ### get year/month/day values
+using Dates
 Dates.yearmonthday(qdt)
 # => (2017,5,1)
 
@@ -155,10 +155,10 @@ qtoday == QDate(Dates.today())
 
 ## Requirements
 
-+ [Julia](https://julialang.org) (VERSION ≥ v"0.6")
++ [Julia](https://julialang.org) (VERSION ≥ v"1.0", ready for v"1.1")
     + QDates v0.0.2 is available for Julia of VERSION < v"0.6"
+    + QDates v0.1.0 is available for Julia of VERSION < v"1.0"
 + Dates module
-+ [Compat.jl](https://github.com/JuliaLang/Compat.jl)
 
 
 ## Limitations
