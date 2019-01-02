@@ -1,5 +1,11 @@
 # types.jl
-using Compat.Dates:
+using Dates:
+    Date,
+    DateTime,
+    Period,
+    Year,
+    Month,
+    Day,
     TimeType,
     UTInstant
 

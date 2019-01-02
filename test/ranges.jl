@@ -1,5 +1,13 @@
 # ranges.jl
 
+module RangesTest
+
+using Test
+using Dates
+using QDates
+
+@testset "ranges" begin
+
 let T=QDates.QDate
     local f, l, dr, dr1
     f1 = T(1914); l1 = T(1913,12,30)
@@ -45,10 +53,10 @@ let T=QDates.QDate
                     @test maximum(dr) == last(dr)
                     @test dr[1] == f
                     @test dr[end] <= l
-                    @static if VERSION < v"0.7.0-DEV.5126"
-                        @test next(dr,start(dr)) == (first(dr),1)
+                    @static if VERSION < v"1.1.0-DEV.480"
+                        @test iterate(dr) == (first(dr), 1)
                     else
-                        @test iterate(dr) == (first(dr),1)
+                        @test iterate(dr) == (first(dr), (length(dr), 1))
                     end
 
                     if len < 10000
@@ -103,10 +111,10 @@ let T=QDates.QDate
                     @test maximum(dr) == first(dr)
                     @test dr[1] == l
                     @test dr[end] >= f
-                    @static if VERSION < v"0.7.0-DEV.5126"
-                        @test next(dr,start(dr)) == (first(dr),1)
+                    @static if VERSION < v"1.1.0-DEV.480"
+                        @test iterate(dr) == (first(dr), 1)
                     else
-                        @test iterate(dr) == (first(dr),1)
+                        @test iterate(dr) == (first(dr), (length(dr), 1))
                     end
 
                     if len < 10000
@@ -225,3 +233,7 @@ d = QDates.QDate(2020,1,1)
 # All leap months/years in 20th century
 @test length(filter(QDates.isleapmonth, QDates.QDate(1901):Dates.Month(1):QDates.QDate(2000))) == 
       length(filter(QDates.isleapyear, QDates.QDate(1901):Dates.Year(1):QDates.QDate(2000))) == 36
+
+end
+
+end

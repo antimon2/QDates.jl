@@ -1,5 +1,13 @@
 # accessors.jl
 
+module AccessorsTest
+
+using Dates
+using QDates
+using Test
+
+@testset "accessors" begin
+
 function test_qdates(from,to)
     ds = QDates.days(QDates.QDate(from,1,1))
     y = m = d = 0; l = false
@@ -28,10 +36,18 @@ end
 # test_qdates(445,2100)
 test_qdates(1970,2020)
 
+end
+
 # broadcasting
+@testset "Vectorized accessors" begin
+
 a = QDates.QDate(2014,1,1)
 dr = [a,a,a,a,a,a,a,a,a,a]
 @test QDates.year.(dr) == repeat([2014],10)
 @test QDates.month.(dr) == repeat([1],10)
 @test QDates.isleapmonth.(dr) == repeat([false],10)
 @test QDates.day.(dr) == repeat([1],10)
+
+end
+
+end

@@ -4,8 +4,8 @@ os:
   - linux
   - osx
 julia:
-  - 0.6
-  - 0.7
+  - 1.0
+  - 1.1
   - nightly
 notifications:
   email: false
@@ -13,9 +13,8 @@ notifications:
 #script:
 #  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 #  - julia -e 'Pkg.clone(pwd()); Pkg.build("QDates"); Pkg.test("QDates"; coverage=true)'
-after_success:
-  # push coverage results to Coveralls and Codecov
-  - if [ "$TRAVIS_JULIA_VERSION" == "0.6" ]; then
-      julia -e 'cd(Pkg.dir("QDates")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-      julia -e 'cd(Pkg.dir("QDates")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
-    fi
+# after_success:
+#   # push coverage results to Coveralls and Codecov
+#   - julia -e 'using Pkg; cd(Pkg.dir("QDates")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder()); Codecov.submit(process_folder())'
+codecov: true
+coveralls: true
