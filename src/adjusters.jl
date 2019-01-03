@@ -22,10 +22,6 @@ function lastdayofmonth(qdt::QDate)
 end
 @inline Dates.lastdayofmonth(qdt::QDate) = lastdayofmonth(qdt)
 
-if isempty(methods(Dates.DateFunction, (Function, QDate)))
-    Dates.DateFunction(f::ANY, qdt::QDate) = Dates.DateFunction(f, false, qdt)
-end
-
 # Return the next TimeType that falls on dow
 ISQDAYOFWEEK = Dict(先勝 => Dates.DateFunction(is先勝, Base.typemin(QDate)),
                     友引 => Dates.DateFunction(is友引, Base.typemin(QDate)),
