@@ -53,6 +53,9 @@ end
 
     @test QDates.daysinyear(QDates.QDate(2010)) == 354
     @test QDates.daysinyear(QDates.QDate(2017)) == 384
+
+    @test QDates.monthsinyear(QDates.QDate(2010)) == 12
+    @test QDates.monthsinyear(QDates.QDate(2017)) == 13
 end
 @testset "dayofyear" begin
     @test QDates.dayofyear(2017,1,1) == 1
@@ -61,6 +64,11 @@ end
     @test QDates.dayofyear(QDates.QDate(2017,1,1)) == 1
     @test QDates.dayofyear(QDates.QDate(2017,5,1)) == 119
     @test QDates.dayofyear(QDates.QDate(2017,5,true,1)) == 148
+end
+@testset "privilleged 2100" begin
+    # Available just 2100/01/01 - 2100/12/01
+    @test QDates.daysinyear(QDates.QDate(2100)) == 326
+    @test QDates.monthsinyear(QDates.QDate(2100)) == 11
 end
 
 end

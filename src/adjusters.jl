@@ -12,6 +12,7 @@ function lastdayofyear(qdt::QDate)
     return QDate(UTD(value(qdt) + daysinyear(qdt) - cqdate[3]))
 end
 @inline Dates.firstdayofyear(qdt::QDate) = firstdayofyear(qdt)
+@inline Dates.lastdayofyear(qdt::QDate) = lastdayofyear(qdt)
 
 firstdayofmonth(qdt::QDate) = QDate(UTD(value(qdt) - day(qdt) + 1))
 @inline Dates.firstdayofmonth(qdt::QDate) = firstdayofmonth(qdt)
