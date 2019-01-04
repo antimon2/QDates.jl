@@ -6,7 +6,7 @@ function Base.:+(qdt::QDate,y::Year)
     vd = !ol || _rqref(Cint[FIRST_VALUE+DAYS_OFFSET,ny,0,om,1,0,ol]) > 0
     nm = vd ? om : om + ol
     nl = ol && vd
-    ld = daysinmonth(ny, nm)
+    ld = daysinmonth(ny, nm, nl)
     return QDate(ny, nm, nl, d <= ld ? d : ld)
 end
 function Base.:-(qdt::QDate,y::Year)
@@ -15,7 +15,7 @@ function Base.:-(qdt::QDate,y::Year)
     vd = !ol || _rqref(Cint[FIRST_VALUE+DAYS_OFFSET,ny,0,om,1,0,ol]) > 0
     nm = vd ? om : om + ol
     nl = ol && vd
-    ld = daysinmonth(ny, nm)
+    ld = daysinmonth(ny, nm, nl)
     return QDate(ny, nm, nl, d <= ld ? d : ld)
 end
 
@@ -25,14 +25,14 @@ function Base.:+(qdt::QDate,m::Month)
     oy,om,ol,d = yearmonthleapday(qdt)
     days = ceil(Int, value(m) * _DAYS_IN_MONTH_F)
     ny,nm,nl,_ = yearmonthleapday(QDate(UTD(value(qdt)-d+1+days)))
-    ld = daysinmonth(ny, nm)
+    ld = daysinmonth(ny, nm, nl)
     return QDate(ny, nm, nl, d <= ld ? d : ld)
 end
 function Base.:-(qdt::QDate,m::Month)
     oy,om,ol,d = yearmonthleapday(qdt)
     days = floor(Int, value(m) * _DAYS_IN_MONTH_F)
     ny,nm,nl,_ = yearmonthleapday(QDate(UTD(value(qdt)-d+2-days)))
-    ld = daysinmonth(ny, nm)
+    ld = daysinmonth(ny, nm, nl)
     return QDate(ny, nm, nl, d <= ld ? d : ld)
 end
 
