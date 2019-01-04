@@ -12,6 +12,7 @@ function lastdayofyear(qdt::QDate)
     return QDate(UTD(value(qdt) + daysinyear(qdt) - cqdate[3]))
 end
 @inline Dates.firstdayofyear(qdt::QDate) = firstdayofyear(qdt)
+@inline Dates.lastdayofyear(qdt::QDate) = lastdayofyear(qdt)
 
 firstdayofmonth(qdt::QDate) = QDate(UTD(value(qdt) - day(qdt) + 1))
 @inline Dates.firstdayofmonth(qdt::QDate) = firstdayofmonth(qdt)
@@ -21,10 +22,6 @@ function lastdayofmonth(qdt::QDate)
     return QDate(UTD(value(qdt) + daysinmonth(y, m, l) - d))
 end
 @inline Dates.lastdayofmonth(qdt::QDate) = lastdayofmonth(qdt)
-
-if isempty(methods(Dates.DateFunction, (Function, QDate)))
-    Dates.DateFunction(f::ANY, qdt::QDate) = Dates.DateFunction(f, false, qdt)
-end
 
 # Return the next TimeType that falls on dow
 ISQDAYOFWEEK = Dict(先勝 => Dates.DateFunction(is先勝, Base.typemin(QDate)),

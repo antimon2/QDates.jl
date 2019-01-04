@@ -4,6 +4,13 @@ using Test
 using Dates
 using QDates
 
+@testset "Module" begin
+
+@test QDates._qref(2458487) == Int32[2458487, 2018, 322, 11, 28, 1, 0]
+@test QDates._qref(0x0000000000258377) == Int32[2458487, 2018, 322, 11, 28, 1, 0]
+
+end
+
 @testset "daysinmonth" begin
 
 @test QDates.daysinmonth(2001,1) == 30
@@ -73,6 +80,7 @@ test = QDates.QDate(2017,1,1)
 @test_throws ArgumentError QDates.QDate(Dates.UTD(QDates.LAST_VALUE + 1))
 # Months and days must be in range
 @test_throws ArgumentError QDates.QDate(444,1,1)
+@test_throws ArgumentError QDates.QDate(2100,12,2)
 @test_throws ArgumentError QDates.QDate(2101,1,1)
 @test_throws ArgumentError QDates.QDate(2013,0,1)
 @test_throws ArgumentError QDates.QDate(2013,13,1)

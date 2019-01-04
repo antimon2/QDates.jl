@@ -31,8 +31,16 @@ end
     smtk = QDates.QDate(2017,11,12)
     sws = QDates.QDate(2017,12,13)
 
+    @testset "firstdayofyear" begin
+        @test QDates.firstdayofyear(sws) == QDates.QDate(2017,1,1)
+        @test Dates.firstdayofyear(sws) == QDates.QDate(2017,1,1)
+    end
+    @testset "lastdayofyear" begin
+        @test QDates.lastdayofyear(mtk) == QDates.QDate(2017,12,30)
+        @test Dates.lastdayofyear(mtk) == QDates.QDate(2017,12,30)
+    end
     @testset "lastdayofmonth" begin
-        @test QDates.lastdayofmonth(mtk) == QDates.QDate(2017,1,29)
+        @test QDates.lastdayofmonth(mtk) == Dates.lastdayofmonth(mtk) == QDates.QDate(2017,1,29)
         @test QDates.lastdayofmonth(ksrg) == QDates.QDate(2017,2,30)
         @test QDates.lastdayofmonth(yyi) == QDates.QDate(2017,3,29)
         @test QDates.lastdayofmonth(udk) == QDates.QDate(2017,4,30)
@@ -59,7 +67,7 @@ end
         @test QDates.firstdayofmonth(ngtk) == QDates.QDate(2017,9,1)
         @test QDates.firstdayofmonth(kmndk) == QDates.QDate(2017,10,1)
         @test QDates.firstdayofmonth(smtk) == QDates.QDate(2017,11,1)
-        @test QDates.firstdayofmonth(sws) == QDates.QDate(2017,12,1)
+        @test QDates.firstdayofmonth(sws) == Dates.firstdayofmonth(sws) == QDates.QDate(2017,12,1)
     end
 end
 

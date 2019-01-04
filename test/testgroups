@@ -4,5 +4,6 @@ query
 ranges
 rounding
 types
+io
 arithmetic
 conversions

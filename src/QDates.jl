@@ -33,8 +33,7 @@ import Dates:
     yearmonth,
     monthday,
     yearmonthday,
-    days,
-    daysinmonth
+    days
 
 const FIRST_VALUE = 162193
 const LAST_VALUE = 767009
@@ -92,7 +91,6 @@ export
     monthday,
     yearmonthday,
     days,
-    daysinmonth,
     firstdayofyear,
     lastdayofyear,
     firstdayofmonth,
