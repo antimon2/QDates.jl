@@ -25,7 +25,8 @@ _qref(jdn::Unsigned) = _qref(jdn % UInt32)
 # libqref.rqref
 function _rqref(cqdate::Array{Cint,1})
     # Int(ccall((:rqref, libqref), Cint, (Ref{Cint},), cqdate))
-    QREF.rqref(QREF.QDInfo(0, 0, cqdate[2], cqdate[4], Bool(cqdate[7]), cqdate[5]))
+    # QREF.rqref(QREF.QDInfo(0, 0, cqdate[2], cqdate[4], Bool(cqdate[7]), cqdate[5]))
+    QREF.rqref(cqdate[2], cqdate[4], Bool(cqdate[7]), cqdate[5]).j
 end
 
 import Dates

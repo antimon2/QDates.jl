@@ -63,7 +63,7 @@ function daysinmonth(y::Integer, m::Integer, leap::Bool=false)
     #     jdn1 = _rqref(y, m, true)
     #     (jdn1 > 0 ? jdn1 : _rqref(y1, m1, false)) - jdn0
     # end
-    qdinfo = QREF.qref(QREF.rqref(y, m, leap))
+    qdinfo = QREF.rqref(y, m, leap)
     QREF.daysinmonth(qdinfo)
 end
 function daysinmonth(qdt::QDate)
@@ -78,7 +78,7 @@ function isleapyear(y::Integer)
     #     qarr0 = Cint[FIRST_VALUE+DAYS_OFFSET,y,0,m,1,0,1]
     #     _rqref(qarr0) > 0
     # end
-    qdinfo = QREF.qref(QREF.rqref(y))
+    qdinfo = QREF.rqref(y)
     return QREF.daysinyear(qdinfo) > 360
 end
 function isleapyear(qdt::QDate)
@@ -111,7 +111,7 @@ function dayofyear(y::Integer, m::Integer, l::Bool, d::Integer=1)
     # qarr0 = Cint[FIRST_VALUE+DAYS_OFFSET,y,0,m,d,0,l]
     # cqdate = _qref(_rqref(qarr0))
     # Int(cqdate[3])
-    QREF.dayofyear(QREF.qref(QREF.rqref(y, m, l, d)))
+    QREF.dayofyear(QREF.rqref(y, m, l, d))
 end
 function dayofyear(qdt::QDate)
     # cqdate = _qref(qdt)

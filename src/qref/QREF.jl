@@ -148,33 +148,30 @@ function rqi(y::Int)
     _firstidxofyear(rqi2(y))
 end
 
-function rqref(q::QDInfo)
-    q.j > 0 && return q.j
-    if q.y < FIRST_YEAR || q.y > LAST_YEAR
+function rqref(y::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
+    if !(FIRST_YEAR ≤ y ≤ LAST_YEAR)
         # TODO: throw ArgumentError
-        return 0
+        return QDInfo(0, 0, 0, 0, false, 0)
     end
-    if !(1 ≤ q.m ≤ 12)
+    if !(1 ≤ month ≤ 12)
         # TODO: throw ArgumentError
-        return 0
+        return QDInfo(0, 0, 0, 0, false, 0)
     end
 
-    idx = q.idx
-    if idx < 1
-        idx = rqi(q.y - FIRST_YEAR)
-        if q.m > 1 || q.leap
-            idx += q.m - 1 + q.leap
-            if q.leap && !qt[idx].leap
-                return 0
-            end
-            while !(qt[idx].m == q.m && qt[idx].leap == q.leap)
-                idx += 1
-            end
+    idx = rqi(y - FIRST_YEAR)
+    if month > 1 || leap
+        idx += month - 1 + leap
+        if leap && !qt[idx].leap
+            # TODO: throw ArgumentError?
+            return QDInfo(0, 0, 0, 0, false, 0)
+        end
+        while !(qt[idx].m == month && qt[idx].leap == leap)
+            idx += 1
         end
     end
-	return q.md - 1 + qt[idx].j + FIRST_JULIAN
+    j = day - 1 + qt[idx].j + FIRST_JULIAN
+    return QDInfo(j, idx, y, month, leap, day)
 end
-rqref(y::Integer, month::Integer=1, leap::Bool=false, day::Integer=1) = rqref(QDInfo(0, 0, y, month, leap, day))
 
 function dayofyear(q::QDInfo)
     idx = _firstidxofyear(q.idx)
