@@ -1,27 +1,31 @@
 module QDates
 
-# Load dependencies
-deps = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
-if isfile(deps)
-    include(deps)
-else
-    error("QDates not properly installed. Please run Pkg.build(\"QDates\")")
-end
+# # Load dependencies
+# deps = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
+# if isfile(deps)
+#     include(deps)
+# else
+#     error("QDates not properly installed. Please run Pkg.build(\"QDates\")")
+# end
 
-@assert @isdefined libqref
+# @assert @isdefined libqref
+include(joinpath(dirname(@__FILE__), "qref", "QREF.jl"))
 
 # libqref.qref
 function _qref(jdn::Union{Int32, UInt32})
-    cqdate = Array{Cint}(undef, 7)
-    ccall((:qref, libqref), Nothing, (Cint, Ref{Cint}), jdn, cqdate)
-    cqdate
+    # cqdate = Array{Cint}(undef, 7)
+    # ccall((:qref, libqref), Nothing, (Cint, Ref{Cint}), jdn, cqdate)
+    # cqdate
+    qdinfo = QREF.qref(jdn)
+    Cint[qdinfo.j, qdinfo.y, 0, qdinfo.m, qdinfo.md, mod(qdinfo.m + qdinfo.md - 2, 6), qdinfo.leap]
 end
 _qref(jdn::Signed) = _qref(jdn % Int32)
 _qref(jdn::Unsigned) = _qref(jdn % UInt32)
 
 # libqref.rqref
 function _rqref(cqdate::Array{Cint,1})
-    Int(ccall((:rqref, libqref), Cint, (Ref{Cint},), cqdate))
+    # Int(ccall((:rqref, libqref), Cint, (Ref{Cint},), cqdate))
+    QREF.rqref(QREF.QDInfo(0, 0, cqdate[2], cqdate[4], Bool(cqdate[7]), cqdate[5]))
 end
 
 import Dates
@@ -35,11 +39,15 @@ import Dates:
     yearmonthday,
     days
 
-const FIRST_VALUE = 162193
-const LAST_VALUE = 767009
-const FIRST_YEAR = 445
-const LAST_YEAR = 2100
 const DAYS_OFFSET = 1721425
+# const FIRST_VALUE = 162193
+# const LAST_VALUE = 803567
+const FIRST_VALUE = QREF.FIRST_JULIAN - DAYS_OFFSET
+const LAST_VALUE = QREF.LAST_JULIAN - DAYS_OFFSET
+# const FIRST_YEAR = 445
+# const LAST_YEAR = 2200
+const FIRST_YEAR = QREF.FIRST_YEAR
+const LAST_YEAR = QREF.LAST_YEAR
 
 include("types.jl")
 include("periods.jl")
