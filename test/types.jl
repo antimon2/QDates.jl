@@ -58,7 +58,7 @@ test = QDates.QDate(2017,1,1)
 @test_throws ArgumentError QDates.QDate(2017,true,false)
 @test QDates.QDate(UInt64(2017),UInt64(1),UInt64(1)) == test
 @test QDates.QDate(Int128(2017),Int128(1),Int128(1)) == test
-@test_throws InexactError QDates.QDate(170141183460469231731687303715884105727,Int128(1),Int128(1))
+# @test_throws InexactError QDates.QDate(170141183460469231731687303715884105727,Int128(1),Int128(1))
 @test QDates.QDate(UInt128(2017),UInt128(1),UInt128(1)) == test
 @test QDates.QDate(big(2017),big(1),big(1)) == test
 @test QDates.QDate(big(2017),big(1),big(1)) == test
@@ -78,6 +78,7 @@ test = QDates.QDate(2017,1,1)
 # Value must be in range
 @test_throws ArgumentError QDates.QDate(Dates.UTD(QDates.FIRST_VALUE - 1))
 @test_throws ArgumentError QDates.QDate(Dates.UTD(QDates.LAST_VALUE + 1))
+@test_throws ArgumentError QDates.QDate(170141183460469231731687303715884105727,Int128(1),Int128(1))
 # Months and days must be in range
 @test_throws ArgumentError QDates.QDate(444,1,1)
 # @test_throws ArgumentError QDates.QDate(2100,12,2)

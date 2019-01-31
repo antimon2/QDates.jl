@@ -62,31 +62,36 @@ include("rounding.jl")
 include("io.jl")
 
 function _rqref_strict(year::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
-    qarr0 = Cint[FIRST_VALUE+DAYS_OFFSET,year,0,month,day,0,leap]
-    jdn = _rqref(qarr0)
-    qarr1 = _qref(jdn)
-    if qarr1[[2,4,5,7]] != qarr0[[2,4,5,7]]
-        throw(ArgumentError(_chk_error(qarr0, qarr1)))
+    # qarr0 = Cint[FIRST_VALUE+DAYS_OFFSET,year,0,month,day,0,leap]
+    # jdn = _rqref(qarr0)
+    # qarr1 = _qref(jdn)
+    # if qarr1[[2,4,5,7]] != qarr0[[2,4,5,7]]
+    #     throw(ArgumentError(_chk_error(qarr0, qarr1)))
+    # end
+    # jdn
+    qdinfo = QREF.rqref(year, month, leap, day)
+    if year != qdinfo.y || month != qdinfo.m || leap != qdinfo.leap || day != qdinfo.md
+        throw(ArgumentError(_chk_error(year, month, leap, day, qdinfo)))
     end
-    jdn
+    qdinfo.j
 end
 
-function _chk_error(qarr0::Array{Cint,1}, qarr1::Array{Cint,1})
-    if !(FIRST_YEAR <= qarr0[2] <= LAST_YEAR)
-        "Year: $(qarr0[2]) out of range ($FIRST_YEAR:$LAST_YEAR)"
-    elseif !(1 <= qarr0[4] <= 12)
-        "Month: $(qarr0[4]) out of range (1:12)"
-    elseif qarr0[7] != 0 && qarr1[2] == 0
-        "Month: $(qarr0[2])/$(qarr0[4]) not a leap month"
-    elseif qarr0[5] < 1
-        "Day: $(qarr0[5]) out of range (1:$(daysinmonth(qarr0[2],qarr0[4],(qarr0[7]!=0))))"
-    elseif qarr0[2] == LAST_YEAR && qarr0[4] == 12 && qarr0[5] > 1
-        # 2100/12 is privilleged
-        "Day: $(qarr0[5]) out of range (1:1)"
-    elseif qarr0[5] > qarr1[5]
-        "Day: $(qarr0[5]) out of range (1:$(qarr0[5]-qarr1[5]))"
+function _chk_error(y::Integer, m::Integer, leap::Bool, md::Integer, qdinfo::QREF.QDInfo)
+    if !(FIRST_YEAR <= y <= LAST_YEAR)
+        "Year: $y out of range ($FIRST_YEAR:$LAST_YEAR)"
+    elseif !(1 <= m <= 12)
+        "Month: $m out of range (1:12)"
+    elseif leap && !qdinfo.leap
+        "Month: $(y)/$(m) not a leap month"
+    elseif md < 1
+        "Day: $md out of range (1:$(daysinmonth(y, m, leap)))"
+    # elseif y == LAST_YEAR && m == 12 && md > 1
+    #     # 2100/12 is privilleged
+    #     "Day: $(md) out of range (1:1)"
+    elseif md > qdinfo.md
+        "Day: $(md) out of range (1:$(md-qdinfo.md))"
     else
-        "$(qarr0)/$(qarr1)"
+        "($y, $m, $leap, $md)/($(qdinfo.y), $(qdinfo.m), $(qdinfo.leap), $(qdinfo.md))"
     end
 end
 

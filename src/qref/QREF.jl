@@ -99,6 +99,21 @@ function nextmonth(qdinfo::QDInfo)
     # Note: returns QDInfo of 1st day of next month
 end
 
+function addmonth(qdinfo::QDInfo, month::Integer)
+    idx = qdinfo.idx + month
+    if !(FIRST_RECORD ≤ idx ≤ LAST_RECORD)
+        # TODO: ArgumentError
+        return QDInfo(0, 0, 0, 0, false, 0)
+    end
+    p = qt[idx]
+    j = p.j + FIRST_JULIAN
+    m = p.m
+    y = p.y + FIRST_YEAR
+    leap = p.leap
+    return QDInfo(j, idx, y, m, leap, 1)
+    # Note: returns QDInfo of 1st day of the month
+end
+
 function nextyear(qdinfo::QDInfo)
     idx = qdinfo.idx + 12 - qdinfo.m
     p = qt[idx]
@@ -147,15 +162,18 @@ end
 function rqi(y::Int)
     _firstidxofyear(rqi2(y))
 end
+rqi(y::Integer) = rqi(Int(y))
 
 function rqref(y::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
     if !(FIRST_YEAR ≤ y ≤ LAST_YEAR)
         # TODO: throw ArgumentError
-        return QDInfo(0, 0, 0, 0, false, 0)
+        # return QDInfo(0, 0, 0, 0, false, 0)
+        throw(ArgumentError("Year: $y out of range ($FIRST_YEAR:$LAST_YEAR)"))
     end
     if !(1 ≤ month ≤ 12)
         # TODO: throw ArgumentError
-        return QDInfo(0, 0, 0, 0, false, 0)
+        # return QDInfo(0, 0, 0, 0, false, 0)
+        throw(ArgumentError("Month: $month out of range (1:12)"))
     end
 
     idx = rqi(y - FIRST_YEAR)
@@ -164,12 +182,18 @@ function rqref(y::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
         if leap && !qt[idx].leap
             # TODO: throw ArgumentError?
             return QDInfo(0, 0, 0, 0, false, 0)
+            # throw(ArgumentError("Month: $(y)/$(month) not a leap month"))
         end
         while !(qt[idx].m == month && qt[idx].leap == leap)
             idx += 1
         end
     end
     j = day - 1 + qt[idx].j + FIRST_JULIAN
+    if !(qt[idx].j ≤ j - FIRST_JULIAN < qt[idx + 1].j)
+        # TODO: ArgumentError("Day: $md out of range (1:$(daysinmonth(y, m, leap)))")
+        return qref(j)
+        # throw(ArgumentError("Day: $day out of range (1:$(qt[idx + 1].j - qt[idx].j))"))
+    end
     return QDInfo(j, idx, y, month, leap, day)
 end
 
