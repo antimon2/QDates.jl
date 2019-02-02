@@ -23,9 +23,6 @@ end
 
 @inline QDate(year::Integer, month::Integer=1, day::Integer=1) = QDate(year, month, false, day)
 function QDate(year::Integer, month::Integer, leap::Bool, day::Integer)
-    # jdn = _rqref(year, month, leap, day)
-    # jdn = _rqref_strict(year, month, leap, day)
-    # QDate(UTD(jdn - DAYS_OFFSET))
     qdinfo = QREF.rqref_strict(year, month, leap, day)
     QDate(UTD(qdinfo.j - DAYS_OFFSET))
 end

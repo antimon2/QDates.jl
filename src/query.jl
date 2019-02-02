@@ -11,8 +11,6 @@ dayabbr(qdt::QDate) = qdaysofweek[dayofweek(qdt)]
 
 # Days of week from 先勝 = 1 to 赤口 = 6
 function dayofweek(qdt::QDate)
-    # cqdate = _qref(qdt)
-    # Int(cqdate[6]) + 1
     qdinfo = QREF.qref(date2jdn(qdt))
     mod1(qdinfo.m + qdinfo.md - 1, 6)
 end
@@ -31,73 +29,33 @@ const leap_prefix = "閏"
 monthname(dt::Integer, leap::Bool=false) = leap ? (leap_prefix * qmonths[dt]) : qmonths[dt]
 @inline monthabbr(dt::Integer, leap::Bool=false) = monthname(dt, leap)
 function monthname(qdt::QDate)
-    # cqdate = _qref(qdt)
-    # monthname(cqdate[4], (cqdate[7] != 0))
     qdinfo = QREF.qref(date2jdn(qdt))
     monthname(qdinfo.m, qdinfo.leap)
 end
 function monthabbr(qdt::QDate)
-    # cqdate = _qref(qdt)
-    # monthabbr(cqdate[4], (cqdate[7] != 0))
     qdinfo = QREF.qref(date2jdn(qdt))
     monthname(qdinfo.m, qdinfo.leap)
 end
 
 function daysinmonth(y::Integer, m::Integer, leap::Bool=false)
-    # y1 = y
-    # m1 = m + 1
-    # if m1 > 12
-    #     y1 += 1
-    #     m1 = 1
-    #     if y1 > LAST_YEAR
-    #         # 2100/12 is privilleged
-    #         return leap ? 0 : 1
-    #     end
-    # end
-    # jdn0 = _rqref(y, m, leap)
-    # if jdn0 == 0
-    #     0
-    # elseif leap
-    #     _rqref(y1, m1, false) - jdn0
-    # else
-    #     jdn1 = _rqref(y, m, true)
-    #     (jdn1 > 0 ? jdn1 : _rqref(y1, m1, false)) - jdn0
-    # end
     qdinfo = QREF.rqref(y, m, leap)
     QREF.daysinmonth(qdinfo)
 end
 function daysinmonth(qdt::QDate)
-    # cqdate = _qref(qdt)
-    # daysinmonth(cqdate[2], cqdate[4], (cqdate[7] != 0))
     qdinfo = QREF.qref(date2jdn(qdt))
     QREF.daysinmonth(qdinfo)
 end
 
 function isleapyear(y::Integer)
-    # any(1:12) do m
-    #     qarr0 = Cint[FIRST_VALUE+DAYS_OFFSET,y,0,m,1,0,1]
-    #     _rqref(qarr0) > 0
-    # end
     qdinfo = QREF.rqref(y)
     return QREF.daysinyear(qdinfo) > 360
 end
 function isleapyear(qdt::QDate)
-    # cqdate = _qref(qdt)
-    # isleapyear(cqdate[2])
     qdinfo = QREF.qref(date2jdn(qdt))
     return QREF.daysinyear(qdinfo) > 360
 end
 
 function daysinyear(qdt::QDate)
-    # cqdate = _qref(qdt)
-    # # sum(daysinmonth(cqdate[2], m, l) for m=1:12, l=false:true)
-    # jdn0 = _rqref(Cint[cqdate[1],cqdate[2],0,1,1,0,0])
-    # if cqdate[2] == 2100
-    #     # privilleged 2100/xx
-    #     _rqref(Cint[cqdate[1],cqdate[2],0,12,1,0,0]) - jdn0 + 1
-    # else
-    #     _rqref(Cint[cqdate[1],cqdate[2]+1,0,1,1,0,0]) - jdn0
-    # end
     qdinfo = QREF.qref(date2jdn(qdt))
     QREF.daysinyear(qdinfo)
 end
@@ -108,13 +66,8 @@ end
 
 dayofyear(y::Integer, m::Integer, d::Integer) = dayofyear(y, m, false, d)
 function dayofyear(y::Integer, m::Integer, l::Bool, d::Integer=1)
-    # qarr0 = Cint[FIRST_VALUE+DAYS_OFFSET,y,0,m,d,0,l]
-    # cqdate = _qref(_rqref(qarr0))
-    # Int(cqdate[3])
     QREF.dayofyear(QREF.rqref(y, m, l, d))
 end
 function dayofyear(qdt::QDate)
-    # cqdate = _qref(qdt)
-    # Int(cqdate[3])
     QREF.dayofyear(QREF.qref(date2jdn(qdt)))
 end
