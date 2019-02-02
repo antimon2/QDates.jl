@@ -82,7 +82,7 @@ function qi(j::Int)
     l = FIRST_RECORD
     u = LAST_RECORD
     while l < u
-        m = (j - qt[l].j) * (u - l) ÷ (qt[u].j - qt[l].j) + l
+        m = Int(Int64(j - qt[l].j) * (u - l) ÷ (qt[u].j - qt[l].j)) + l
         if qt[m].j < j
             l = m + 1
             qt[l].j > j && return l - 1
