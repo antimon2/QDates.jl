@@ -13,7 +13,7 @@ function Dates.len(a::QDate, b::QDate, c)
             i += 1
         end
     catch ex
-        if !isa(ex, ArgumentError)
+        if !isa(ex, ArgumentError) && !isa(ex, BoundsError)
             rethrow()
         # else
         #     #pass

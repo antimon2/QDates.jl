@@ -4,13 +4,37 @@
 
 module QREF
 
-struct QDInfo
-    j::Int
+abstract type AbstractQDInfo end
+
+struct QDInfo <: AbstractQDInfo
     idx::Int
+    j::Int
     y::Int
     m::Int
     leap::Bool
     md::Int
+end
+
+abstract type QDError <: AbstractQDInfo end
+struct QDRecordError{I} <: QDError
+    idx::I
+end
+struct QDJulianError{I} <: QDError
+    j::I
+end
+struct QDYearError{I} <: QDError
+    y::I
+end
+struct QDMonthError{I} <: QDError
+    m::I
+end
+struct QDLeapMonthError{Y, M} <: QDError
+    y::Y
+    m::M
+end
+struct QDDayError{I, D} <: QDError
+    idx::I
+    md::D
 end
 
 struct CQDate
@@ -76,7 +100,8 @@ end
 function qref(j::Int)
     if j < FIRST_JULIAN || j > LAST_JULIAN
         # TODO: throw ArgumentError
-        return QDInfo(0, 0, 0, 0, false, 0)
+        # return QDInfo(QDINFO_OUT_OF_RANGE_JULIAN, j, 0, 0, false, 0)
+        return QDJulianError(j)
     end
     idx = qi(j - FIRST_JULIAN)
     p = qt[idx]
@@ -84,7 +109,7 @@ function qref(j::Int)
     y = p.y + FIRST_YEAR
     md = 1 + j - (p.j + FIRST_JULIAN)
     leap = p.leap
-    return QDInfo(j, idx, y, m, leap, md)
+    return QDInfo(idx, j, y, m, leap, md)
 end
 qref(j::Integer) = qref(Int(j))
 
@@ -95,7 +120,7 @@ function nextmonth(qdinfo::QDInfo)
     m = p.m
     y = p.y + FIRST_YEAR
     leap = p.leap
-    return QDInfo(j, idx, y, m, leap, 1)
+    return QDInfo(idx, j, y, m, leap, 1)
     # Note: returns QDInfo of 1st day of next month
 end
 
@@ -103,14 +128,15 @@ function addmonth(qdinfo::QDInfo, month::Integer)
     idx = qdinfo.idx + month
     if !(FIRST_RECORD ≤ idx ≤ LAST_RECORD)
         # TODO: ArgumentError
-        return QDInfo(0, 0, 0, 0, false, 0)
+        # return QDInfo(QDINFO_OUT_OF_RANGE_RECORD, idx, 0, 0, false, 0)
+        return QDRecordError(idx)
     end
     p = qt[idx]
     j = p.j + FIRST_JULIAN
     m = p.m
     y = p.y + FIRST_YEAR
     leap = p.leap
-    return QDInfo(j, idx, y, m, leap, 1)
+    return QDInfo(idx, j, y, m, leap, 1)
     # Note: returns QDInfo of 1st day of the month
 end
 
@@ -123,7 +149,7 @@ function nextyear(qdinfo::QDInfo)
     end
     j = p.j + FIRST_JULIAN
     y = p.y + FIRST_YEAR
-    return QDInfo(j, idx, y, 1, false, 1)
+    return QDInfo(idx, j, y, 1, false, 1)
     # Note: returns QDInfo of 1st day of next year
 end
 
@@ -167,13 +193,15 @@ rqi(y::Integer) = rqi(Int(y))
 function rqref(y::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
     if !(FIRST_YEAR ≤ y ≤ LAST_YEAR)
         # TODO: throw ArgumentError
-        # return QDInfo(0, 0, 0, 0, false, 0)
-        throw(ArgumentError("Year: $y out of range ($FIRST_YEAR:$LAST_YEAR)"))
+        # return QDInfo(QDINFO_OUT_OF_RANGE_YEAR, 0, y, 0, false, 0)
+        return QDYearError(y)
+        # throw(ArgumentError("Year: $y out of range ($FIRST_YEAR:$LAST_YEAR)"))
     end
     if !(1 ≤ month ≤ 12)
         # TODO: throw ArgumentError
-        # return QDInfo(0, 0, 0, 0, false, 0)
-        throw(ArgumentError("Month: $month out of range (1:12)"))
+        # return QDInfo(QDINFO_OUT_OF_RANGE_MONTH, 0, 0, month, false, 0)
+        return QDMonthError(month)
+        # throw(ArgumentError("Month: $month out of range (1:12)"))
     end
 
     idx = rqi(y - FIRST_YEAR)
@@ -181,7 +209,8 @@ function rqref(y::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
         idx += month - 1 + leap
         if leap && !qt[idx].leap
             # TODO: throw ArgumentError?
-            return QDInfo(0, 0, 0, 0, false, 0)
+            # return QDInfo(QDINFO_NOT_LEAP_MONTH, 0, y, month, true, 0)
+            return QDLeapMonthError(y, month)
             # throw(ArgumentError("Month: $(y)/$(month) not a leap month"))
         end
         while !(qt[idx].m == month && qt[idx].leap == leap)
@@ -194,7 +223,35 @@ function rqref(y::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
         return qref(j)
         # throw(ArgumentError("Day: $day out of range (1:$(qt[idx + 1].j - qt[idx].j))"))
     end
-    return QDInfo(j, idx, y, month, leap, day)
+    return QDInfo(idx, j, y, month, leap, day)
+end
+function rqref_strict(y::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
+    qdinfo = _check_qdinfo(rqref(y, month, leap, day))
+    if qdinfo.md != day
+        qdinfo1 = rqref(y, month, leap, 1)
+        _check_qdinfo(QDDayError(qdinfo1.idx, day))
+    end
+    qdinfo
+end
+_check_qdinfo(qdinfo::QDInfo) = qdinfo
+function _check_qdinfo(qderror::QDRecordError)
+    throw(ArgumentError("Idx: $(qderror.idx) out of range ($FIRST_RECORD:$LAST_RECORD)"))
+end
+function _check_qdinfo(qderror::QDJulianError)
+    throw(ArgumentError("Jdn: $(qderror.j) out of range ($FIRST_JULIAN:$LAST_JULIAN)"))
+end
+function _check_qdinfo(qderror::QDYearError)
+    throw(ArgumentError("Year: $(qderror.y) out of range ($FIRST_YEAR:$LAST_YEAR)"))
+end
+function _check_qdinfo(qderror::QDMonthError)
+    throw(ArgumentError("Month: $(qderror.m) out of range (1:12)"))
+end
+function _check_qdinfo(qderror::QDLeapMonthError)
+    throw(ArgumentError("Month: $(qderror.y)/$(qderror.m) not a leap month"))
+end
+function _check_qdinfo(qderror::QDDayError)
+    _daysinmonth = qt[qderror.idx + 1].j - qt[qderror.idx].j
+    throw(ArgumentError("Day: $(qderror.md) out of range (1:$(_daysinmonth))"))
 end
 
 function dayofyear(q::QDInfo)
@@ -215,6 +272,7 @@ function daysinmonth(q::QDInfo)
     FIRST_RECORD ≤ q.idx ≤ LAST_RECORD || return 0  # TODO: ArgumentError
     qt[q.idx + 1].j - qt[q.idx].j
 end
+daysinmonth(q::QDError) = 0
 
 function daysinyear(q::QDInfo)
     sidx = _firstidxofyear(q.idx)

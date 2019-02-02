@@ -24,20 +24,15 @@ end
 @inline QDate(year::Integer, month::Integer=1, day::Integer=1) = QDate(year, month, false, day)
 function QDate(year::Integer, month::Integer, leap::Bool, day::Integer)
     # jdn = _rqref(year, month, leap, day)
-    jdn = _rqref_strict(year, month, leap, day)
-    QDate(UTD(jdn - DAYS_OFFSET))
+    # jdn = _rqref_strict(year, month, leap, day)
+    # QDate(UTD(jdn - DAYS_OFFSET))
+    qdinfo = QREF.rqref_strict(year, month, leap, day)
+    QDate(UTD(qdinfo.j - DAYS_OFFSET))
 end
 @inline _ci(x) = convert(Cint, x)
 @inline QDate(y,m=1,d=1) = QDate(_ci(y), _ci(m), _ci(d))
 @inline QDate(y,m,l::Bool,d) = QDate(_ci(y), _ci(m), l, _ci(d))
 @inline QDate(qdt::QDate) = qdt
-
-@inline function _qref(qdt::Union{Date,QDate})
-    _qref(date2jdn(qdt))
-end
-@inline function _rqref(year::Integer, month::Integer=1, leap::Bool=false, day::Integer=1)
-    _rqref(Cint[FIRST_VALUE+DAYS_OFFSET,year,0,month,day,0,leap])
-end
 
 @inline QDate(y::Year, m::Month=Month(1), d::Day=Day(1)) = QDate(value(y), value(m), false, value(d))
 @inline QDate(y::Year, m::Month, l::Bool, d::Day=Day(1)) = QDate(value(y), value(m), l, value(d))
