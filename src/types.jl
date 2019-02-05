@@ -7,7 +7,8 @@ using Dates:
     Month,
     Day,
     TimeType,
-    UTInstant
+    UTInstant,
+    value
 
 struct QDate <: TimeType
     instant::UTInstant{Day}
@@ -26,7 +27,7 @@ function QDate(year::Integer, month::Integer, leap::Bool, day::Integer)
     qdinfo = QREF.rqref_strict(year, month, leap, day)
     QDate(UTD(qdinfo.j - DAYS_OFFSET))
 end
-@inline _ci(x) = convert(Cint, x)
+@inline _ci(x) = convert(Int, x)
 @inline QDate(y,m=1,d=1) = QDate(_ci(y), _ci(m), _ci(d))
 @inline QDate(y,m,l::Bool,d) = QDate(_ci(y), _ci(m), l, _ci(d))
 @inline QDate(qdt::QDate) = qdt
@@ -58,3 +59,8 @@ Base.isless(x::QDate, y::QDate) = isless(value(x), value(y))
 
 Base.promote_rule(::Type{QDate}, x::Type{Date}) = Date
 Base.promote_rule(::Type{QDate}, x::Type{DateTime}) = DateTime
+
+# for convenience
+function QREF.qref(qdt::QDate)
+    QREF.qref(value(qdt) + DAYS_OFFSET)
+end

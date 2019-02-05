@@ -10,7 +10,7 @@ firstdayofyear(qdt::QDate) = QDate(UTD(value(qdt) - dayofyear(qdt) + 1))
 function lastdayofyear(qdt::QDate)
     # cqdate = _qref(qdt)
     # return QDate(UTD(value(qdt) + daysinyear(qdt) - cqdate[3]))
-    qdinfo = QREF.qref(date2jdn(qdt))
+    qdinfo = QREF.qref(qdt)
     jdn2qdate(QREF.lastjdninyear(qdinfo))
 end
 @inline Dates.firstdayofyear(qdt::QDate) = firstdayofyear(qdt)

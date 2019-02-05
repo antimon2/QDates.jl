@@ -11,7 +11,7 @@ dayabbr(qdt::QDate) = qdaysofweek[dayofweek(qdt)]
 
 # Days of week from 先勝 = 1 to 赤口 = 6
 function dayofweek(qdt::QDate)
-    qdinfo = QREF.qref(date2jdn(qdt))
+    qdinfo = QREF.qref(qdt)
     mod1(qdinfo.m + qdinfo.md - 1, 6)
 end
 
@@ -29,11 +29,11 @@ const leap_prefix = "閏"
 monthname(dt::Integer, leap::Bool=false) = leap ? (leap_prefix * qmonths[dt]) : qmonths[dt]
 @inline monthabbr(dt::Integer, leap::Bool=false) = monthname(dt, leap)
 function monthname(qdt::QDate)
-    qdinfo = QREF.qref(date2jdn(qdt))
+    qdinfo = QREF.qref(qdt)
     monthname(qdinfo.m, qdinfo.leap)
 end
 function monthabbr(qdt::QDate)
-    qdinfo = QREF.qref(date2jdn(qdt))
+    qdinfo = QREF.qref(qdt)
     monthname(qdinfo.m, qdinfo.leap)
 end
 
@@ -42,7 +42,7 @@ function daysinmonth(y::Integer, m::Integer, leap::Bool=false)
     QREF.daysinmonth(qdinfo)
 end
 function daysinmonth(qdt::QDate)
-    qdinfo = QREF.qref(date2jdn(qdt))
+    qdinfo = QREF.qref(qdt)
     QREF.daysinmonth(qdinfo)
 end
 
@@ -51,12 +51,12 @@ function isleapyear(y::Integer)
     return QREF.daysinyear(qdinfo) > 360
 end
 function isleapyear(qdt::QDate)
-    qdinfo = QREF.qref(date2jdn(qdt))
+    qdinfo = QREF.qref(qdt)
     return QREF.daysinyear(qdinfo) > 360
 end
 
 function daysinyear(qdt::QDate)
-    qdinfo = QREF.qref(date2jdn(qdt))
+    qdinfo = QREF.qref(qdt)
     QREF.daysinyear(qdinfo)
 end
 
@@ -69,5 +69,5 @@ function dayofyear(y::Integer, m::Integer, l::Bool, d::Integer=1)
     QREF.dayofyear(QREF.rqref(y, m, l, d))
 end
 function dayofyear(qdt::QDate)
-    QREF.dayofyear(QREF.qref(date2jdn(qdt)))
+    QREF.dayofyear(QREF.qref(qdt))
 end
