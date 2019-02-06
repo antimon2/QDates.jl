@@ -5,7 +5,7 @@ environment:
   - julia_version: nightly
 
 platform:
-  # - x86 # 32-bit # NOT Supported
+  - x86 # 32-bit
   - x64 # 64-bit
 
 # # Uncomment the following lines to allow failures on nightly julia
@@ -28,9 +28,9 @@ notifications:
 install:
   - ps: iex ((new-object net.webclient).DownloadString("https://raw.githubusercontent.com/JuliaCI/Appveyor.jl/version-1/bin/install.ps1"))
 
-build_script:
-  - echo "%JL_BUILD_SCRIPT%"
-  - C:\julia\bin\julia -e "%JL_BUILD_SCRIPT%"
+# build_script:
+#   - echo "%JL_BUILD_SCRIPT%"
+#   - C:\julia\bin\julia -e "%JL_BUILD_SCRIPT%"
 
 test_script:
   - echo "%JL_TEST_SCRIPT%"
