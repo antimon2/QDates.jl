@@ -1,7 +1,7 @@
 QDates
 ======
 
-[![Build Status](https://travis-ci.org/antimon2/QDates.jl.svg?branch=master)](https://travis-ci.org/antimon2/QDates.jl) [![Build status](https://ci.appveyor.com/api/projects/status/github/antimon2/QDates.jl?branch=master)](https://ci.appveyor.com/project/antimon2/qdates-jl/branch/master)  
+[![Build Status](https://travis-ci.org/antimon2/QDates.jl.svg?branch=master)](https://travis-ci.org/antimon2/QDates.jl) [![Build status](https://ci.appveyor.com/api/projects/status/github/antimon2/QDates.jl?branch=master)](https://ci.appveyor.com/project/antimon2/qdates-jl/branch/master)  [![Cirrus](https://api.cirrus-ci.com/github/antimon2/QDates.jl.svg)](https://cirrus-ci.com/github/antimon2/QDates.jl)  
 [![Coverage Status](https://coveralls.io/repos/antimon2/QDates.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/antimon2/QDates.jl?branch=master) [![codecov.io](http://codecov.io/github/antimon2/QDates.jl/coverage.svg?branch=master)](http://codecov.io/github/antimon2/QDates.jl?branch=master)
 
 The **QDates** package provides Japanese "Kyūreki (旧暦)" calendrical calculations into Julia.  
