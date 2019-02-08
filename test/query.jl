@@ -38,8 +38,8 @@ daysinmonth = [29,30,29,30,29,29,30,29,30,29,30,30,30]
             @test QDates.monthabbr(qdt) == monthnames[i]
             @test QDates.monthabbr(m) == monthnames[i == 6 ? 5 : i]
             @test QDates.dayofweek(qdt) == daysofweek[i]
-            @test QDates.dayname(qdt) == dows[i]
-            @test QDates.dayabbr(qdt) == dows[i]
+            @test QDates.dayname(qdt) == QDates.dayname(QDates.dayofweek(qdt)) == dows[i]
+            @test QDates.dayabbr(qdt) == QDates.dayabbr(QDates.dayofweek(qdt)) == dows[i]
             @test QDates.daysinmonth(qdt) == daysinmonth[i]
         end
     end

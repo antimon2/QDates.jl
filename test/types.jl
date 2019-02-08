@@ -46,6 +46,7 @@ end
 @testset "various input types for QDate" begin
 
 test = QDates.QDate(2017,1,1)
+@test test == QDates.QDate(test) === test
 @test QDates.QDate(2017,Int8(1),Int8(1)) == test
 @test QDates.QDate(2017,UInt8(1),UInt8(1)) == test
 @test QDates.QDate(Int16(2017),Int16(1),Int16(1)) == test
@@ -61,7 +62,6 @@ test = QDates.QDate(2017,1,1)
 # @test_throws InexactError QDates.QDate(170141183460469231731687303715884105727,Int128(1),Int128(1))
 @test QDates.QDate(UInt128(2017),UInt128(1),UInt128(1)) == test
 @test QDates.QDate(big(2017),big(1),big(1)) == test
-@test QDates.QDate(big(2017),big(1),big(1)) == test
 # Potentially won't work if can't losslessly convert to Int64
 @test QDates.QDate(BigFloat(2017),BigFloat(1),BigFloat(1)) == test
 @test QDates.QDate(complex(2017),complex(1),complex(1)) == test
@@ -69,11 +69,35 @@ test = QDates.QDate(2017,1,1)
 @test QDates.QDate(Float32(2017),Float32(1),Float32(1)) == test
 @test QDates.QDate(Float16(2017),Float16(1),Float16(1)) == test
 @test QDates.QDate(Rational(2017),Rational(1),Rational(1)) == test
+
+test5l = QDates.QDate(2017,5,true,1)
+@test test5l == QDates.QDate(test5l) === test5l
+@test QDates.QDate(2017,Int8(5),true,Int8(1)) == test5l
+@test QDates.QDate(2017,UInt8(5),true,UInt8(1)) == test5l
+@test QDates.QDate(Int16(2017),Int16(5),true,Int16(1)) == test5l
+@test QDates.QDate(UInt16(2017),UInt8(5),true,UInt8(1)) == test5l
+@test QDates.QDate(Int32(2017),Int32(5),true,Int32(1)) == test5l
+@test QDates.QDate(UInt32(2017),UInt32(5),true,UInt32(1)) == test5l
+@test QDates.QDate(Int64(2017),Int64(5),true,Int64(1)) == test5l
+@test QDates.QDate('\u07e1','\x05',true,'\x01') == test5l
+@test QDates.QDate(UInt64(2017),UInt64(5),true,UInt64(1)) == test5l
+@test QDates.QDate(Int128(2017),Int128(5),true,Int128(1)) == test5l
+@test QDates.QDate(UInt128(2017),UInt128(5),true,UInt128(1)) == test5l
+@test QDates.QDate(big(2017),big(5),true,big(1)) == test5l
+# Potentially won't work if can't losslessly convert to Int64
+@test QDates.QDate(BigFloat(2017),BigFloat(5),true,BigFloat(1)) == test5l
+@test QDates.QDate(complex(2017),complex(5),true,complex(1)) == test5l
+@test QDates.QDate(Float64(2017),Float64(5),true,Float64(1)) == test5l
+@test QDates.QDate(Float32(2017),Float32(5),true,Float32(1)) == test5l
+@test QDates.QDate(Float16(2017),Float16(5),true,Float16(1)) == test5l
+@test QDates.QDate(Rational(2017),Rational(5),true,Rational(1)) == test5l
+
 @test_throws InexactError QDates.QDate(BigFloat(1.2),BigFloat(1),BigFloat(1))
 @test_throws InexactError QDates.QDate(1 + im,complex(1),complex(1))
 @test_throws InexactError QDates.QDate(1.2,1.0,1.0)
 @test_throws InexactError QDates.QDate(1.2f0,1.f0,1.f0)
 @test_throws InexactError QDates.QDate(3//4,Rational(1),Rational(1)) == test
+@test_throws InexactError QDates.QDate(2017.1,5.0,true,1.0)
 
 # Value must be in range
 @test_throws ArgumentError QDates.QDate(Dates.UTD(QDates.FIRST_VALUE - 1))

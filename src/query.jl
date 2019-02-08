@@ -46,10 +46,6 @@ function daysinmonth(qdt::QDate)
     QREF.daysinmonth(qdinfo)
 end
 
-function isleapyear(y::Integer)
-    qdinfo = QREF.rqref(y)
-    return QREF.daysinyear(qdinfo) > 360
-end
 function isleapyear(qdt::QDate)
     qdinfo = QREF.qref(qdt)
     return QREF.daysinyear(qdinfo) > 360
