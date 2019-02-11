@@ -1,7 +1,7 @@
 QDates.jl release notes
 =======================
 
-Version 0.3.0 (2019/02/xx / 旧2019年01月xx日)
+Version 0.3.0 (2019/02/11 / 旧2019年01月07日)
 ---------------------------------------------
 
 ### Significant change in internal implementation
@@ -13,6 +13,7 @@ Version 0.3.0 (2019/02/xx / 旧2019年01月xx日)
 ### Specification change
 
 + Expand available dates (`旧445年1月1日` to `旧2200年12月29日`) (previously the max date is `旧2100年12月1日`)
+
 
 Version 0.2.0 (2019/01/04 / 旧2018年11月29日)
 ---------------------------------------------
