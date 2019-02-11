@@ -18,8 +18,10 @@ notifications:
 #   - julia -e 'using Pkg; cd(Pkg.dir("QDates")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder()); Codecov.submit(process_folder())'
 # codecov: true
 # coveralls: true
-jobs:
-  include:
-    - if: os = osx
-      codecov: true
-      coveralls: true
+# jobs:
+#   include:
+#     - if: os = osx
+#       codecov: true
+#       coveralls: true
+codecov: os = osx
+coveralls: os = osx
