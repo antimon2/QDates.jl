@@ -200,8 +200,8 @@ b = QDates.QDate(2014,2,1)
 @test first(typemin(QDates.QDate):typemax(QDates.QDate)) == typemin(QDates.QDate)
 
 # Non-default step sizes
-@test length(typemin(QDates.QDate):Dates.Month(1):typemax(QDates.QDate)) == 20482
-@test length(typemin(QDates.QDate):Dates.Year(1):typemax(QDates.QDate)) == 1656
+@test length(typemin(QDates.QDate):Dates.Month(1):typemax(QDates.QDate)) == QDates.QREF.LAST_RECORD  # == 21719
+@test length(typemin(QDates.QDate):Dates.Year(1):typemax(QDates.QDate)) == QDates.QREF.LAST_YEAR - QDates.QREF.FIRST_YEAR + 1  # == 1756
 
 c = QDates.QDate(2014,6,1)
 @test length(a:Dates.Month(1):c) == 6

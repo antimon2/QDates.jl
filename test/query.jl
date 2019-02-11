@@ -38,8 +38,8 @@ daysinmonth = [29,30,29,30,29,29,30,29,30,29,30,30,30]
             @test QDates.monthabbr(qdt) == monthnames[i]
             @test QDates.monthabbr(m) == monthnames[i == 6 ? 5 : i]
             @test QDates.dayofweek(qdt) == daysofweek[i]
-            @test QDates.dayname(qdt) == dows[i]
-            @test QDates.dayabbr(qdt) == dows[i]
+            @test QDates.dayname(qdt) == QDates.dayname(QDates.dayofweek(qdt)) == dows[i]
+            @test QDates.dayabbr(qdt) == QDates.dayabbr(QDates.dayofweek(qdt)) == dows[i]
             @test QDates.daysinmonth(qdt) == daysinmonth[i]
         end
     end
@@ -65,10 +65,35 @@ end
     @test QDates.dayofyear(QDates.QDate(2017,5,1)) == 119
     @test QDates.dayofyear(QDates.QDate(2017,5,true,1)) == 148
 end
-@testset "privilleged 2100" begin
-    # Available just 2100/01/01 - 2100/12/01
-    @test QDates.daysinyear(QDates.QDate(2100)) == 326
-    @test QDates.monthsinyear(QDates.QDate(2100)) == 11
+@testset "privilleged 2100 (broken)" begin
+    # (til v0.1.0) Available just 2100/01/01 - 2100/12/01
+    @test_broken QDates.daysinyear(QDates.QDate(2100)) == 326
+    @test_broken QDates.monthsinyear(QDates.QDate(2100)) == 11
+end
+@testset "test for years 2100-2200" begin
+    # Available 2100/01/01 - 2200/12/29
+    @test QDates.daysinyear(QDates.QDate(2100)) == 354
+    @test QDates.monthsinyear(QDates.QDate(2100)) == 12
+    @test QDates.daysinyear(QDates.QDate(2110)) == 354
+    @test QDates.monthsinyear(QDates.QDate(2110)) == 12
+    @test QDates.daysinyear(QDates.QDate(2120)) == 384
+    @test QDates.monthsinyear(QDates.QDate(2120)) == 13
+    @test QDates.daysinyear(QDates.QDate(2130)) == 355
+    @test QDates.monthsinyear(QDates.QDate(2130)) == 12
+    @test QDates.daysinyear(QDates.QDate(2140)) == 355
+    @test QDates.monthsinyear(QDates.QDate(2140)) == 12
+    @test QDates.daysinyear(QDates.QDate(2150)) == 384
+    @test QDates.monthsinyear(QDates.QDate(2150)) == 13
+    @test QDates.daysinyear(QDates.QDate(2160)) == 354
+    @test QDates.monthsinyear(QDates.QDate(2160)) == 12
+    @test QDates.daysinyear(QDates.QDate(2170)) == 354
+    @test QDates.monthsinyear(QDates.QDate(2170)) == 12
+    @test QDates.daysinyear(QDates.QDate(2180)) == 384
+    @test QDates.monthsinyear(QDates.QDate(2180)) == 13
+    @test QDates.daysinyear(QDates.QDate(2190)) == 354
+    @test QDates.monthsinyear(QDates.QDate(2190)) == 12
+    @test QDates.daysinyear(QDates.QDate(2200)) == 354
+    @test QDates.monthsinyear(QDates.QDate(2200)) == 12
 end
 
 end

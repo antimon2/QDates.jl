@@ -1,8 +1,7 @@
 QDates
 ======
 
-[![Build Status](https://travis-ci.org/antimon2/QDates.jl.svg?branch=master)](https://travis-ci.org/antimon2/QDates.jl) [![Build status](https://ci.appveyor.com/api/projects/status/github/antimon2/QDates.jl?branch=master)](https://ci.appveyor.com/project/antimon2/qdates-jl/branch/master)  
-<!--[![QDates](http://pkg.julialang.org/badges/QDates_0.5.svg)](http://pkg.julialang.org/detail/QDates) [![QDates](http://pkg.julialang.org/badges/QDates_0.6.svg)](http://pkg.julialang.org/detail/QDates)  -->
+[![Build Status](https://travis-ci.org/antimon2/QDates.jl.svg?branch=master)](https://travis-ci.org/antimon2/QDates.jl) [![Build status](https://ci.appveyor.com/api/projects/status/github/antimon2/QDates.jl?branch=master)](https://ci.appveyor.com/project/antimon2/qdates-jl/branch/master)  [![Cirrus](https://api.cirrus-ci.com/github/antimon2/QDates.jl.svg)](https://cirrus-ci.com/github/antimon2/QDates.jl)  
 [![Coverage Status](https://coveralls.io/repos/antimon2/QDates.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/antimon2/QDates.jl?branch=master) [![codecov.io](http://codecov.io/github/antimon2/QDates.jl/coverage.svg?branch=master)](http://codecov.io/github/antimon2/QDates.jl?branch=master)
 
 The **QDates** package provides Japanese "Kyūreki (旧暦)" calendrical calculations into Julia.  
@@ -163,12 +162,9 @@ qtoday == QDate(Dates.today())
 
 ## Limitations
 
-+ Year range is 445-2100. `QDate(2101)` throws `ArgumentError`.
-+ Not support 32bit-Windows.
++ Year range is 445-2200. `QDate(2201)` throws `ArgumentError`.
 
 
 ## Credits
 
 QDates.jl is created by @antimon2 (Shunsuke GOTOH).
-
-qref.c (included in [Calendrical module](https://www.funaba.org/code#calendrical)) by [Tadayoshi FUNABA](https://www.funaba.org/).
