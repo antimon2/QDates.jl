@@ -55,4 +55,25 @@ export
     monthleapday,
     yearmonthleapday
 
+# for individual application
+@static if haskey(ENV, "QDATES_BUILD_APP") || abspath(PROGRAM_FILE) == @__FILE__
+
+include(joinpath(dirname(@__FILE__), "app", "App.jl"))
+
+function julia_main()
+    try
+        App.main()
+    catch
+        Base.invokelatest(Base.display_error, Base.catch_stack())
+        return 1
+    end
+    return 0
+end
+
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    App.main()
+end
+
 end # module
