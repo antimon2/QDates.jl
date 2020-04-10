@@ -44,27 +44,30 @@ struct CQDate
     leap::Bool
 end
 
-const qt = let qtsrcpath = joinpath(dirname(@__FILE__), "QTSRC.bin")
-    _dims = filesize(qtsrcpath) + 1
-    _qt = Vector{CQDate}(undef, _dims)
+const qt = let qtsrcpath = joinpath(dirname(@__FILE__), "QTSRCU.bin")
     open(qtsrcpath, "r") do f_in
+        _dims = Int(read(f_in, Char)) + 1
+        _qt = Vector{CQDate}(undef, _dims)
         j = 0
-        m = 1
         y = -1
-        idx = 1
+        idx = 0
         while !eof(f_in)
-            qts = read(f_in, UInt8)
-            ny = isodd(qts >> 1)
-            l = isodd(qts)
-            l || (m = ny ? 1 : m + 1)
-            ny && (y += 1)
-            _qt[idx] = CQDate(j, y, m, l)
-            j += qts >> 2
-            idx += 1
+            y += 1
+            m = 0
+            _c = UInt32(read(f_in, Char))
+            _l = Int(_c >> 13)
+            bit = 0x00000001
+            for _m in 1:(iszero(_l) ? 12 : 13)
+                l = _m == _l
+                l || (m += 1)
+                _qt[idx += 1] = CQDate(j, y, m, l)
+                j += iszero(_c & bit) ? 29 : 30
+                bit <<= 1
+            end
         end
-        _qt[idx] = CQDate(j, y + 1, 1, false)
+        _qt[idx + 1] = CQDate(j, y + 1, 1, false)
+        _qt
     end
-    _qt
 end
 
 const FIRST_RECORD = 1
