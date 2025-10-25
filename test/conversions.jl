@@ -10,29 +10,29 @@ using QDates
 @testset "conversion to/from Julian-Date-Number" begin
     @test QDates.date2jdn(QDates.jdn2date(2457875)) == 2457875
     @test QDates.qdate2jdn(QDates.jdn2qdate(2457875)) == 2457875
-    @test QDates.jdn2date(QDates.date2jdn(Dates.Date(2017,5,1))) == Dates.Date(2017,5,1)
+    @test QDates.jdn2date(QDates.date2jdn(Date(2017,5,1))) == Date(2017,5,1)
     @test QDates.jdn2qdate(QDates.qdate2jdn(QDates.QDate(2017,5,true,1))) == QDates.QDate(2017,5,true,1)
 
-    dt = Dates.Date(2017,5,1)
+    dt = Date(2017,5,1)
     @test QDates.date2jdn(dt) == round(Int, Dates.datetime2julian(Dates.DateTime(dt)), RoundNearestTiesUp)
 end
 
 @testset "today" begin
     @test typeof(QDates.today()) <: QDates.QDate
-    @test typeof(QDates.today(Dates.Date)) <: Dates.Date
+    @test typeof(QDates.today(Date)) <: Date
     @test typeof(QDates.today(QDates.QDate)) <: QDates.QDate
-    @test typeof(Dates.today()) <: Dates.Date
-    @test typeof(Dates.today(Dates.Date)) <: Dates.Date
+    @test typeof(Dates.today()) <: Date
+    @test typeof(Dates.today(Date)) <: Date
     @test typeof(Dates.today(QDates.QDate)) <: QDates.QDate
 end
 
 # Conversions to/from Date/DateTime
 @testset "Conversions to/from Date/DateTime" begin
-    dt = Dates.Date(2017,5,26)
+    dt = Date(2017,5,26)
     dttm = Dates.DateTime(2017,5,26)
     qdt = QDates.QDate(2017,5,1)
-    @test convert(Dates.Date, qdt) == dt
-    @test Dates.Date(qdt) == dt
+    @test convert(Date, qdt) == dt
+    @test Date(qdt) == dt
     @test convert(Dates.DateTime, qdt) == dttm
     @test Dates.DateTime(qdt) == dttm
     @test convert(QDates.QDate, dt) == qdt

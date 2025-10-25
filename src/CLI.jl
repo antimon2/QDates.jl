@@ -24,9 +24,9 @@ function @main(ARGS)
     for arg in ARGS
         try
             qdt = if occursin(r"^\d+-\d+-\d+$", arg)
-                QDate(Dates.Date(arg, Dates.dateformat"yyyy-mm-dd"))
+                QDate(Date(arg, Dates.dateformat"yyyy-mm-dd"))
             elseif occursin(r"^\d+/\d+/\d+$", arg)
-                QDate(Dates.Date(arg, Dates.dateformat"yyyy/mm/dd"))
+                QDate(Date(arg, Dates.dateformat"yyyy/mm/dd"))
             elseif haskey(dic, arg)
                 QDates.today() + QDates.Day(dic[arg])
             elseif (m = match(r"(\d+)日(前|後)", arg)) !== nothing
