@@ -59,6 +59,10 @@ export
 
 include("CLI.jl")
 
+function @main(ARGS)
+    return CLI.main(ARGS)
+end
+
 end
 
 end # module
