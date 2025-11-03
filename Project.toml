@@ -1,7 +1,7 @@
 name = "QDates"
 uuid = "25f12f5a-a783-5f9a-af99-e55629686113"
 authors = ["GOTOH Shunsuke <antimon2.me@gmail.com> and contributors"]
-version = "0.4.0-DEV"
+version = "0.4.0"
 
 [compat]
 julia = "1.10"
