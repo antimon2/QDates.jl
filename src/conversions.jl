@@ -1,10 +1,12 @@
 # conversions.jl
 
+import Dates: Dates, Date, DateTime
+
 @inline date2jdn(dt::Union{Date,QDate}) = value(dt) + DAYS_OFFSET
 @inline qdate2jdn(qdt::QDate) = date2jdn(qdt)
 
-@inline jdn2date(j::Integer) = Dates.Date(Dates.UTD(j - DAYS_OFFSET))
-@inline jdn2qdate(j::Integer) = QDates.QDate(Dates.UTD(j - DAYS_OFFSET))
+@inline jdn2date(j::Integer) = Date(Dates.UTD(j - DAYS_OFFSET))
+@inline jdn2qdate(j::Integer) = QDate(Dates.UTD(j - DAYS_OFFSET))
 
 Base.convert(::Type{Date}, qdt::QDate) = Date(qdt.instant)
 Base.convert(::Type{QDate}, dt::Date) = QDate(dt.instant)

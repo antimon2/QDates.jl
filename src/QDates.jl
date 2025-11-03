@@ -55,4 +55,14 @@ export
     monthleapday,
     yearmonthleapday
 
+@static if VERSION >= v"1.12.0"
+
+include("CLI.jl")
+
+function @main(ARGS)
+    return CLI.main(ARGS)
+end
+
+end
+
 end # module

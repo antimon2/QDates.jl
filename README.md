@@ -152,11 +152,53 @@ qtoday == QDate(Dates.today())
 ```
 
 
+## Installation as CLI (for Julia ≥ v1.12)
+
+To install `qdate` CLI command, run it on the Julia Pkg REPL-mode:
+
+```julia
+pkg> app add QDates
+```
+
+
+### Usage
+
+```shell
+$ qdate
+今日は 旧2025年09月14日、仏滅 です。
+
+$  qdate 今日 明日 2112/9/3 1970-1-1 100日後 100日前
+今日 は、旧2025年09月14日、仏滅 です。
+明日 は、旧2025年09月15日、大安 です。
+2112/9/3 は、旧2112年07月13日、先勝 です。
+1970-1-1 は、旧1969年11月24日、仏滅 です。
+100日後 は、旧2025年12月24日、大安 です。
+100日前 は、旧2025年閏06月02日、先勝 です。
+```
+
+
+### For `juliac`
+
+You can compile `qdate` command with [juliac](https://github.com/JuliaLang/JuliaC.jl) as follows (for example):
+
+```shell
+$ juliac --output-exe qdate --bundle build --trim=safe --experimental .
+✓ Compiling...
+ : ommitted the output
+
+$ ./build/bin/qdate 今日 明日
+今日 は、旧2025年09月14日、仏滅 です。
+明日 は、旧2025年09月15日、大安 です。
+```
+
+
 ## Requirements
 
-+ [Julia](https://julialang.org) (VERSION ≥ v"1.0", ready for v"1.1")
++ [Julia](https://julialang.org) (VERSION ≥ v"1.10", ready for v"1.12")
     + QDates v0.0.2 is available for Julia of VERSION < v"0.6"
     + QDates v0.1.0 is available for Julia of VERSION < v"1.0"
+    + QDates v0.3.0 is available for Julia of VERSION < v"1.10"
+    + Julia of VERSION ≥ v"1.12" is required to install `qdate` CLI command.
 + Dates module
 
 
